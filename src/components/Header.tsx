@@ -10,7 +10,7 @@ export function Header() {
             MS
           </div>
           <div>
-            <h1 className="text-xl font-bold">Matthew's Codex</h1>
+            <h1 className="text-xl font-bold">Matthew&apos;s Codex</h1>
             <p className="text-sm text-muted-foreground">Personal knowledge assistant</p>
           </div>
         </div>
