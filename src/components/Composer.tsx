@@ -7,9 +7,10 @@ interface ComposerProps {
   onSendMessage?: (message: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  isLoading?: boolean;
 }
 
-export function Composer({ onSendMessage, disabled = false, placeholder = "Type a message..." }: ComposerProps) {
+export function Composer({ onSendMessage, disabled = false, placeholder = "Type a message...", isLoading = false }: ComposerProps) {
   const [inputValue, setInputValue] = useState("");
   const [isMultiline, setIsMultiline] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -81,8 +82,12 @@ export function Composer({ onSendMessage, disabled = false, placeholder = "Type 
             disabled={disabled}
           />
         )}
-        <Button type="submit" size="icon" disabled={disabled || !inputValue.trim()} className="action-button">
-          <Send className="h-4 w-4" />
+        <Button type="submit" size="icon" disabled={disabled || !inputValue.trim() || isLoading} className="action-button">
+          {isLoading ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          ) : (
+            <Send className="h-4 w-4" />
+          )}
           <span className="sr-only">Send message</span>
         </Button>
       </form>

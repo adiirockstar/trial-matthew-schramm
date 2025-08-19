@@ -9,6 +9,7 @@ import { Composer } from "@/components/Composer";
 import { SampleQuestions } from "@/components/SampleQuestions";
 import { SidebarPanel } from "@/components/SidebarPanel";
 import { Message, Mode } from "@/lib/constants";
+import { ChatService } from "@/lib/chat-service";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -16,6 +17,7 @@ export default function Home() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [currentStreamingId, setCurrentStreamingId] = useState<string | null>(null);
   const composerRef = useRef<HTMLDivElement>(null);
+  const chatService = ChatService.getInstance();
   
   const [sampleQuestions] = useState<string[]>([
     "What kind of engineer are you?",
@@ -29,7 +31,7 @@ export default function Home() {
 
   const generateId = () => Math.random().toString(36).substr(2, 9);
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     const userMessage: Message = {
       id: generateId(),
       role: "user",
@@ -41,7 +43,7 @@ export default function Home() {
     
     setMessages(prev => [...prev, userMessage]);
     
-    // Simulate streaming response
+    // Create assistant message placeholder
     const assistantMessageId = generateId();
     const assistantMessage: Message = {
       id: assistantMessageId,
@@ -59,34 +61,46 @@ export default function Home() {
     setIsStreaming(true);
     setCurrentStreamingId(assistantMessageId);
     
-    // Simulate streaming
-    let currentText = "";
-    const fullResponse = `This is a simulated response in ${selectedMode} mode. Backend integration needed for real responses.`;
-    const startTime = Date.now();
-    
-    const streamInterval = setInterval(() => {
-      if (currentText.length < fullResponse.length) {
-        currentText += fullResponse[currentText.length];
-        setMessages(prev => prev.map(msg => 
-          msg.id === assistantMessageId 
-            ? { ...msg, text: currentText, tokens: currentText.length, latency: Date.now() - startTime }
-            : msg
-        ));
-      } else {
-        clearInterval(streamInterval);
-        setMessages(prev => prev.map(msg => 
-          msg.id === assistantMessageId 
-            ? { ...msg, isStreaming: false, text: currentText }
-            : msg
-        ));
-        setIsStreaming(false);
-        setCurrentStreamingId(null);
-      }
-    }, 50);
+    try {
+      const startTime = Date.now();
+      
+      // Call the chat API
+      const response = await chatService.sendMessage(text, selectedMode);
+      
+      // Update the assistant message with the real response
+      setMessages(prev => prev.map(msg => 
+        msg.id === assistantMessageId 
+          ? { 
+              ...msg, 
+              text: response.answer, 
+              sources: response.sources,
+              isStreaming: false,
+              tokens: response.answer.length,
+              latency: Date.now() - startTime
+            }
+          : msg
+      ));
+      
+    } catch (error) {
+      // Handle error
+      setMessages(prev => prev.map(msg => 
+        msg.id === assistantMessageId 
+          ? { 
+              ...msg, 
+              text: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+              error: error instanceof Error ? error.message : 'Unknown error',
+              isStreaming: false
+            }
+          : msg
+      ));
+    } finally {
+      setIsStreaming(false);
+      setCurrentStreamingId(null);
+    }
   };
 
-  const handleQuestionClick = (question: string) => {
-    handleSendMessage(question);
+  const handleQuestionClick = async (question: string) => {
+    await handleSendMessage(question);
   };
 
   const handleQuestionInsert = (question: string) => {
@@ -113,7 +127,7 @@ export default function Home() {
     setMessages([]);
   };
 
-  const handleRetryMessage = (messageId: string) => {
+  const handleRetryMessage = async (messageId: string) => {
     const message = messages.find(m => m.id === messageId);
     if (message && message.role === "assistant") {
       // Remove the failed message and retry
@@ -123,7 +137,7 @@ export default function Home() {
       if (userMessageIndex >= 0) {
         const userMessage = messages[userMessageIndex];
         if (userMessage.role === "user") {
-          handleSendMessage(userMessage.text);
+          await handleSendMessage(userMessage.text);
         }
       }
     }
@@ -145,8 +159,8 @@ export default function Home() {
     }
   };
 
-  const handleStarterPrompt = (prompt: string) => {
-    handleSendMessage(prompt);
+  const handleStarterPrompt = async (prompt: string) => {
+    await handleSendMessage(prompt);
   };
 
   return (
@@ -176,6 +190,7 @@ export default function Home() {
               <Composer 
                 onSendMessage={handleSendMessage} 
                 disabled={isStreaming}
+                isLoading={isStreaming}
                 placeholder={`Ask me anything in ${selectedMode} mode...`}
               />
             </div>
