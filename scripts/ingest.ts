@@ -11,6 +11,25 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import { toString } from 'mdast-util-to-string';
 
+// Helper function to safely extract error message
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  return String(error);
+}
+
+// Helper function to safely extract error stack trace
+function getErrorStack(error: unknown): string | undefined {
+  if (error instanceof Error) {
+    return error.stack;
+  }
+  return undefined;
+}
+
 // Load environment variables
 dotenv.config({ path: '.env' });
 
@@ -118,9 +137,9 @@ async function loadDocument(filePath: string): Promise<{ content: string; metada
          for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
            const page = await pdfDocument.getPage(pageNum);
            const textContent = await page.getTextContent();
-           const pageText = textContent.items
-             .map((item: any) => item.str)
-             .join(' ');
+                     const pageText = textContent.items
+            .map((item) => 'str' in item ? item.str : '')
+            .join(' ');
            fullText += pageText + '\n';
          }
          
@@ -137,15 +156,15 @@ async function loadDocument(filePath: string): Promise<{ content: string; metada
          console.log(`  📄 PDF parsed successfully: ${pdfDocument.numPages} pages, ${content.length} characters`);
          return { content, metadata };
          
-       } catch (pdfError: any) {
-         console.warn(`  ⚠️  Could not parse PDF ${filename}: ${pdfError.message}`);
-         return null;
-       }
+               } catch (pdfError) {
+          console.warn(`  ⚠️  Could not parse PDF ${filename}: ${getErrorMessage(pdfError)}`);
+          return null;
+        }
      }
     
     return null;
-  } catch (error: any) {
-    console.warn(`⚠️  Warning: Could not read file ${filename}: ${error.message}`);
+  } catch (error) {
+    console.warn(`⚠️  Warning: Could not read file ${filename}: ${getErrorMessage(error)}`);
     return null;
   }
 }
@@ -196,12 +215,12 @@ function initializePinecone() {
     
     return pinecone.Index(indexName);
   } catch (error) {
-    throw new Error(`Failed to initialize Pinecone: ${error.message}`);
+    throw new Error(`Failed to initialize Pinecone: ${getErrorMessage(error)}`);
   }
 }
 
 // Clear existing vectors for files being ingested
-async function clearExistingVectors(index: any, filenames: string[]) {
+async function clearExistingVectors(index: ReturnType<typeof initializePinecone>, filenames: string[]) {
   if (!shouldClear) return;
   
   console.log('🗑️  Clearing existing vectors for files being ingested...');
@@ -215,7 +234,7 @@ async function clearExistingVectors(index: any, filenames: string[]) {
       console.log(`  ✅ Cleared vectors for ${filename}`);
     }
   } catch (error) {
-    console.warn(`⚠️  Warning: Could not clear vectors: ${error.message}`);
+    console.warn(`⚠️  Warning: Could not clear vectors: ${getErrorMessage(error)}`);
   }
 }
 
@@ -357,7 +376,7 @@ async function ingestDocuments() {
       console.log(`  ✅ Processed ${processedChunks}/${allChunks.length} chunks`);
       
     } catch (error) {
-      console.error(`❌ Error processing batch ${i / BATCH_SIZE + 1}: ${error.message}`);
+      console.error(`❌ Error processing batch ${i / BATCH_SIZE + 1}: ${getErrorMessage(error)}`);
       throw error;
     }
   }
@@ -373,8 +392,11 @@ async function main() {
   try {
     await ingestDocuments();
   } catch (error) {
-    console.error(`\n❌ Fatal error: ${error.message}`);
-    console.error('\nStack trace:', error.stack);
+    console.error(`\n❌ Fatal error: ${getErrorMessage(error)}`);
+    const stackTrace = getErrorStack(error);
+    if (stackTrace) {
+      console.error('\nStack trace:', stackTrace);
+    }
     process.exit(1);
   }
 }

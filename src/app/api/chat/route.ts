@@ -4,6 +4,13 @@ import { systemBase, modePreambles } from "@/lib/prompt";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import OpenAI from "openai";
 
+interface DocumentMetadata {
+  title?: string;
+  source?: string;
+  file?: string;
+  text?: string;
+}
+
 const CHAT_MODEL = "gpt-4o-mini";
 const EMB_MODEL = "text-embedding-ada-002"; // Changed to match 1536 dimensions
 const TOP_K = 5;
@@ -29,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     // 3) Build context
     const context = matches.map((m, i) => {
-      const md = (m.metadata || {}) as any;
+      const md = (m.metadata || {}) as DocumentMetadata;
       const title = md.title ?? md.file ?? `Doc ${i + 1}`;
       const src = md.source ?? "Doc";
       const file = md.file ?? "";
@@ -55,12 +62,12 @@ export async function POST(req: NextRequest) {
 
     const answer = chat.choices[0]?.message?.content ?? "";
     const sources = matches.map(m => {
-      const md = (m.metadata || {}) as any;
+      const md = (m.metadata || {}) as DocumentMetadata;
       return md.title ?? md.file ?? "Doc";
     });
 
     return NextResponse.json({ answer, sources });
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "chat_error", detail: String(e) }, { status: 500 });
   }

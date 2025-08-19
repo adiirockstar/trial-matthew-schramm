@@ -1,4 +1,4 @@
-import { Message, Mode } from "./constants";
+import { Mode } from "./constants";
 
 export interface ChatResponse {
   answer: string;
