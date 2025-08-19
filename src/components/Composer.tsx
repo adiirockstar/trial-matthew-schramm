@@ -8,13 +8,19 @@ interface ComposerProps {
   disabled?: boolean;
   placeholder?: string;
   isLoading?: boolean;
+  value?: string;
 }
 
-export function Composer({ onSendMessage, disabled = false, placeholder = "Type a message...", isLoading = false }: ComposerProps) {
-  const [inputValue, setInputValue] = useState("");
+export function Composer({ onSendMessage, disabled = false, placeholder = "Type a message...", isLoading = false, value = "" }: ComposerProps) {
+  const [inputValue, setInputValue] = useState(value);
   const [isMultiline, setIsMultiline] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Update internal state when external value changes
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

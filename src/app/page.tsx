@@ -7,6 +7,7 @@ import { ModeSwitcher } from "@/components/ModeSwitcher";
 import { ChatWindow } from "@/components/ChatWindow";
 import { Composer } from "@/components/Composer";
 import { SampleQuestions } from "@/components/SampleQuestions";
+import { SelfReflectionQuestions } from "@/components/SelfReflectionQuestions";
 import { SidebarPanel } from "@/components/SidebarPanel";
 import { Message, Mode } from "@/lib/constants";
 import { ChatService } from "@/lib/chat-service";
@@ -16,6 +17,7 @@ export default function Home() {
   const [selectedMode, setSelectedMode] = useState<Mode>("Interview");
   const [isStreaming, setIsStreaming] = useState(false);
   const [currentStreamingId, setCurrentStreamingId] = useState<string | null>(null);
+  const [insertedQuestion, setInsertedQuestion] = useState<string>("");
   const composerRef = useRef<HTMLDivElement>(null);
   const chatService = ChatService.getInstance();
   
@@ -42,6 +44,9 @@ export default function Home() {
     };
     
     setMessages(prev => [...prev, userMessage]);
+    
+    // Clear the inserted question value
+    setInsertedQuestion("");
     
     // Create assistant message placeholder
     const assistantMessageId = generateId();
@@ -104,21 +109,8 @@ export default function Home() {
   };
 
   const handleQuestionInsert = (question: string) => {
-    // Focus composer and insert text
-    if (composerRef.current) {
-      const textarea = composerRef.current.querySelector('textarea') as HTMLTextAreaElement;
-      const input = composerRef.current.querySelector('input') as HTMLInputElement;
-      
-      if (textarea) {
-        textarea.focus();
-        textarea.value = question;
-        textarea.dispatchEvent(new Event('input', { bubbles: true }));
-      } else if (input) {
-        input.focus();
-        input.value = question;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    }
+    // Set the inserted question value for the composer
+    setInsertedQuestion(question);
   };
 
   const handleModeChange = (mode: Mode) => {
@@ -192,19 +184,27 @@ export default function Home() {
                 disabled={isStreaming}
                 isLoading={isStreaming}
                 placeholder={`Ask me anything in ${selectedMode} mode...`}
+                value={insertedQuestion}
               />
             </div>
           </div>
           
           {/* Right Column - Sidebar */}
           <div className="space-y-4 lg:space-y-6">
-            <SampleQuestions 
-              questions={sampleQuestions} 
-              onQuestionClick={handleQuestionClick}
-              onQuestionInsert={handleQuestionInsert}
-              onModeChange={handleModeChange}
-              selectedMode={selectedMode}
-            />
+            {selectedMode === "Self-Reflection" ? (
+              <SelfReflectionQuestions 
+                onQuestionClick={handleQuestionClick}
+                onQuestionInsert={handleQuestionInsert}
+              />
+            ) : (
+              <SampleQuestions 
+                questions={sampleQuestions} 
+                onQuestionClick={handleQuestionClick}
+                onQuestionInsert={handleQuestionInsert}
+                onModeChange={handleModeChange}
+                selectedMode={selectedMode}
+              />
+            )}
             <SidebarPanel />
           </div>
         </div>

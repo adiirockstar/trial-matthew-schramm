@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useState } from "react";
 import { Send, Edit3 } from "lucide-react";
 import { Mode, MODES } from "@/lib/constants";
@@ -54,58 +53,57 @@ export function SampleQuestions({
       <CardHeader className="space-y-4">
         <CardTitle className="text-lg">Sample Questions</CardTitle>
         
-        {/* Mode Selection */}
-        <div className="space-y-2">
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Conversation Mode
-          </label>
-          <div className="flex flex-wrap gap-1">
-            {MODES.map((mode) => (
-              <Button
-                key={mode}
-                variant={selectedMode === mode ? "default" : "outline"}
-                size="sm"
-                className={`px-2 py-1 text-xs font-medium transition-all duration-200 ${
-                  selectedMode === mode 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
-                    : "hover:bg-muted hover:text-foreground"
-                }`}
-                onClick={() => handleModeChange(mode)}
-              >
-                {mode}
-              </Button>
-            ))}
+        {/* Mode Selection - Only show if onModeChange is provided */}
+        {onModeChange && (
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Conversation Mode
+            </label>
+            <div className="flex flex-wrap gap-1">
+              {MODES.filter(mode => mode !== "Self-Reflection").map((mode) => (
+                <Button
+                  key={mode}
+                  variant={selectedMode === mode ? "default" : "outline"}
+                  size="sm"
+                  className={`px-2 py-1 text-xs font-medium transition-all duration-200 ${
+                    selectedMode === mode 
+                      ? "bg-primary text-primary-foreground shadow-sm" 
+                      : "hover:bg-muted hover:text-foreground"
+                  }`}
+                  onClick={() => handleModeChange(mode)}
+                >
+                  {mode}
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Behavior Toggle */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Question Action
           </label>
-          <ToggleGroup
-            type="single"
-            value={behavior}
-            onValueChange={(value) => value && setBehavior(value as "insert" | "send")}
-            className="justify-start"
-          >
-            <ToggleGroupItem 
-              value="insert" 
-              size="sm" 
-              className={`text-xs px-3 py-2 ${behavior === "insert" ? "bg-primary text-primary-foreground" : ""}`}
+          <div className="flex gap-2">
+            <Button
+              variant={behavior === "insert" ? "default" : "outline"}
+              size="sm"
+              className="text-xs px-3 py-2"
+              onClick={() => setBehavior("insert")}
             >
               <Edit3 className="h-3 w-3 mr-1" />
               Insert
-            </ToggleGroupItem>
-            <ToggleGroupItem 
-              value="send" 
-              size="sm" 
-              className={`text-xs px-3 py-2 ${behavior === "send" ? "bg-primary text-primary-foreground" : ""}`}
+            </Button>
+            <Button
+              variant={behavior === "send" ? "default" : "outline"}
+              size="sm"
+              className="text-xs px-3 py-2"
+              onClick={() => setBehavior("send")}
             >
               <Send className="h-3 w-3 mr-1" />
               Send
-            </ToggleGroupItem>
-          </ToggleGroup>
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-2">

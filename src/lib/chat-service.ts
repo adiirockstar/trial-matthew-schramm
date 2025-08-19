@@ -59,7 +59,8 @@ export class ChatService {
       "Interview": "interview",
       "Story": "story", 
       "TL;DR": "tldr",
-      "Humble Brag": "humblebrag"
+      "Humble Brag": "humblebrag",
+      "Self-Reflection": "selfreflection"
     };
     return modeMap[mode];
   }

@@ -8,5 +8,6 @@ export const modePreambles: Record<string, string> = {
   interview: "Style: concise, professional, evaluative.",
   story: "Style: narrative, reflective, first-person when natural.",
   tldr: "Style: bullet points; TL;DR summaries.",
-  humblebrag: "Style: confident but grounded in verifiable context."
+  humblebrag: "Style: confident but grounded in verifiable context.",
+  selfreflection: "Style: introspective, analytical, growth-oriented. Focus on patterns, insights, and actionable self-awareness."
 };
