@@ -1,4 +1,4 @@
-import { Github, Settings } from "lucide-react";
+import { Github, Settings, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -23,10 +23,24 @@ export function Header() {
               <span className="sr-only">Admin</span>
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" className="h-8 w-8 lg:h-9 lg:w-9">
-            <Github className="h-4 w-4" />
-            <span className="sr-only">GitHub</span>
-          </Button>
+          <a href="https://github.com/Schramm2" target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="icon" className="h-8 w-8 lg:h-9 lg:w-9">
+              <Github className="h-4 w-4" />
+              <span className="sr-only">GitHub</span>
+            </Button>
+          </a>
+          <a href="https://www.linkedin.com/in/matthew-schramm-476523253" target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="icon" className="h-8 w-8 lg:h-9 lg:w-9">
+              <Linkedin className="h-4 w-4" />
+              <span className="sr-only">LinkedIn</span>
+            </Button>
+          </a>
+          <a href="mailto:mattschramm1235@gmail.com">
+            <Button variant="ghost" size="icon" className="h-8 w-8 lg:h-9 lg:w-9">
+              <Mail className="h-4 w-4" />
+              <span className="sr-only">Email</span>
+            </Button>
+          </a>
         </div>
       </div>
     </header>

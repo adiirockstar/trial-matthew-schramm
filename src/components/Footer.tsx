@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import { Github, Linkedin, Mail, ExternalLink, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -21,18 +21,30 @@ export function Footer() {
             {/* Social & Contact */}
             <div className="flex items-center gap-3 lg:gap-4">
               <div className="flex gap-1 lg:gap-2">
-                <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
-                  <Github className="h-3 w-3 lg:h-4 lg:w-4" />
-                  <span className="sr-only">GitHub</span>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
-                  <Linkedin className="h-3 w-3 lg:h-4 lg:w-4" />
-                  <span className="sr-only">LinkedIn</span>
-                </Button>
-                <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
-                  <Mail className="h-3 w-3 lg:h-4 lg:w-4" />
-                  <span className="sr-only">Email</span>
-                </Button>
+                <a href="https://github.com/Schramm2" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
+                    <Github className="h-3 w-3 lg:h-4 lg:w-4" />
+                    <span className="sr-only">GitHub</span>
+                  </Button>
+                </a>
+                <a href="https://www.linkedin.com/in/matthew-schramm-476523253" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
+                    <Linkedin className="h-3 w-3 lg:h-4 lg:w-4" />
+                    <span className="sr-only">LinkedIn</span>
+                  </Button>
+                </a>
+                <a href="mailto:mattschramm1235@gmail.com">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
+                    <Mail className="h-3 w-3 lg:h-4 lg:w-4" />
+                    <span className="sr-only">Email</span>
+                  </Button>
+                </a>
+                <a href="https://matthew-schramm-portfolio.onrender.com" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 lg:h-8 lg:w-8">
+                    <Globe className="h-3 w-3 lg:h-4 lg:w-4" />
+                    <span className="sr-only">Portfolio</span>
+                  </Button>
+                </a>
               </div>
               <div className="text-xs lg:text-sm text-muted-foreground">
                 <p>Built with Next.js, OpenAI, and Pinecone</p>
