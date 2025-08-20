@@ -12,6 +12,96 @@ interface MessageBubbleProps {
   onStopStreaming?: () => void;
 }
 
+// Function to format AI response text with better formatting
+function formatAIResponse(text: string): React.ReactNode {
+  // Split text into lines for processing
+  const lines = text.split('\n');
+  
+  return lines.map((line, index) => {
+    const trimmedLine = line.trim();
+    
+    // Skip empty lines
+    if (!trimmedLine) {
+      return <div key={index} className="h-3" />;
+    }
+    
+    // Check for headers (lines ending with colon that are bold)
+    if (trimmedLine.endsWith(':') && trimmedLine.includes('**')) {
+      const headerText = trimmedLine.replace(/\*\*/g, '');
+      return (
+        <div key={index} className="mb-3">
+          <h4 className="font-semibold text-base text-foreground mb-2 border-b border-border/50 pb-1">
+            {headerText}
+          </h4>
+        </div>
+      );
+    }
+    
+    // Check for bold text (wrapped in **)
+    if (trimmedLine.includes('**')) {
+      const parts = trimmedLine.split(/(\*\*.*?\*\*)/g);
+      return (
+        <div key={index} className="mb-2">
+          {parts.map((part, partIndex) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return (
+                <span key={partIndex} className="font-semibold text-foreground">
+                  {part.slice(2, -2)}
+                </span>
+              );
+            }
+            return <span key={partIndex}>{part}</span>;
+          })}
+        </div>
+      );
+    }
+    
+    // Check for lists (lines starting with - or •)
+    if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
+      const listItem = trimmedLine.substring(1).trim();
+      return (
+        <div key={index} className="flex items-start gap-2 mb-1 ml-2">
+          <span className="text-primary mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+          <span className="text-sm">{listItem}</span>
+        </div>
+      );
+    }
+    
+    // Check for numbered lists (lines starting with numbers)
+    if (/^\d+\./.test(trimmedLine)) {
+      const parts = trimmedLine.split(/^(\d+\.)\s*/);
+      if (parts.length >= 3) {
+        return (
+          <div key={index} className="flex items-start gap-2 mb-1 ml-2">
+            <span className="text-primary font-medium text-sm flex-shrink-0 min-w-[1.5rem]">
+              {parts[1]}
+            </span>
+            <span className="text-sm">{parts[2]}</span>
+          </div>
+        );
+      }
+    }
+    
+    // Check for TL;DR section
+    if (trimmedLine.startsWith('**TL;DR:**')) {
+      const tldrText = trimmedLine.replace('**TL;DR:**', '').trim();
+      return (
+        <div key={index} className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+          <div className="font-semibold text-primary mb-1">TL;DR</div>
+          <div className="text-sm">{tldrText}</div>
+        </div>
+      );
+    }
+    
+    // Regular paragraph text
+    return (
+      <div key={index} className="mb-2 text-sm leading-relaxed">
+        {trimmedLine}
+      </div>
+    );
+  });
+}
+
 export function MessageBubble({ message, onRetry, onDelete, onStopStreaming }: MessageBubbleProps) {
   const isUser = message.role === "user";
 
@@ -46,7 +136,13 @@ export function MessageBubble({ message, onRetry, onDelete, onStopStreaming }: M
                 : "bg-muted text-foreground"
             }`}
           >
-            {message.text}
+            {isUser ? (
+              message.text
+            ) : (
+              <div className="prose prose-sm max-w-none">
+                {formatAIResponse(message.text)}
+              </div>
+            )}
           </div>
           
           <div className="absolute -top-1 -right-1 z-10">

@@ -97,12 +97,12 @@ export function ChatWindow({
         {announcement}
       </div>
       
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
         <h2 className="text-lg font-semibold">Chat</h2>
       </div>
 
       <ScrollArea 
-        className="flex-1 p-4" 
+        className="flex-1 p-4 min-h-0 overflow-auto" 
         ref={scrollAreaRef}
         onScroll={handleScroll}
       >

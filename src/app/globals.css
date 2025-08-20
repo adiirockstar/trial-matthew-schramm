@@ -259,6 +259,30 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Chat window height and scroll behavior */
+.chat-messages-container {
+  height: 600px; /* Fixed height to match sidebar */
+  max-height: 600px;
+  overflow: hidden;
+  min-height: 0;
+  flex-shrink: 0;
+}
+
+/* Responsive height adjustments */
+@media (max-width: 1024px) {
+  .chat-messages-container {
+    height: 500px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-messages-container {
+    height: 400px;
+    max-height: 400px;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

@@ -163,11 +163,11 @@ export default function Home() {
         <div className="container mx-auto flex-1 grid grid-cols-1 gap-4 p-4 lg:grid-cols-[1fr_340px] lg:gap-6">
           {/* Left Column - Chat Area */}
           <div className="flex flex-col rounded-2xl border bg-card">
-            <div className="p-4 border-b">
+            <div className="p-4 border-b flex-shrink-0">
               <ModeSwitcher onModeChange={handleModeChange} initialMode={selectedMode} />
             </div>
             
-            <div className="flex-1 min-h-0">
+            <div className="chat-messages-container">
               <ChatWindow 
                 messages={messages} 
                 selectedMode={selectedMode}
@@ -178,7 +178,7 @@ export default function Home() {
               />
             </div>
             
-            <div ref={composerRef}>
+            <div ref={composerRef} className="flex-shrink-0">
               <Composer 
                 onSendMessage={handleSendMessage} 
                 disabled={isStreaming}

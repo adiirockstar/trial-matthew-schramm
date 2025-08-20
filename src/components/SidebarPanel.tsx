@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, HelpCircle, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { FileText, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
 export function SidebarPanel() {
@@ -24,59 +24,56 @@ export function SidebarPanel() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <HelpCircle className="h-5 w-5" />
-              What is this?
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              Matthew&apos;s Codex is a personal knowledge assistant that helps you learn about my skills, 
-              experience, and values through natural conversation.
-            </p>
-            <p>
-              Think of it as a smart, interactive version of my resume and portfolio.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Settings className="h-5 w-5" />
-              How to use
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm text-muted-foreground">
-            <div className="flex items-start gap-2">
-              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-              <span>Pick a conversation mode that fits your needs</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-              <span>Ask questions about my background or skills</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-              <span>Explore sample questions to get started</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
               <FileText className="h-5 w-5" />
               About
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              This application is built with Next.js, Tailwind CSS, and shadcn/ui components. 
-              The UI is ready for backend functionality to be implemented.
-            </p>
-            <Button variant="outline" className="w-full">
-              View README
-            </Button>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Matthew's Codex is an intelligent personal knowledge assistant that leverages AI to provide 
+                instant access to my professional background, skills, and experiences.
+              </p>
+              
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">Key Features:</h4>
+                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+                  <li>• Multi-mode conversations (Interview, Story, TL;DR, Humble Brag)</li>
+                  <li>• Self-reflection prompts for deeper insights</li>
+                  <li>• AI-powered document analysis and retrieval</li>
+                  <li>• Real-time streaming responses</li>
+                  <li>• Comprehensive portfolio and resume access</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">Technical Stack:</h4>
+                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+                  <li>• Frontend: Next.js 14, React 18, TypeScript</li>
+                  <li>• Styling: Tailwind CSS, shadcn/ui components</li>
+                  <li>• AI: OpenAI GPT-4o-mini integration</li>
+                  <li>• Vector Database: Pinecone for semantic search</li>
+                  <li>• File Processing: PDF, Markdown, and text support</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">Architecture:</h4>
+                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+                  <li>• Server-side rendering with Next.js App Router</li>
+                  <li>• RESTful API endpoints for chat and file management</li>
+                  <li>• Real-time streaming with Server-Sent Events</li>
+                  <li>• Responsive design with mobile-first approach</li>
+                  <li>• Admin panel for dataset management</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="pt-2">
+              <Button variant="outline" className="w-full">
+                View README
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
