@@ -1,17 +1,21 @@
 # Matthew's Personal Codex Agent
 
-A personal knowledge assistant that uses AI to help you access and query your personal documents and knowledge base.
+A sophisticated personal knowledge assistant that uses AI to help you access and query your personal documents and knowledge base. Built with Next.js 15, React 19, and powered by OpenAI GPT-4 for intelligent conversations across multiple modes.
 
-## Features
+## ✨ Features
 
-- **Intelligent Chat Interface**: Ask questions about your documents and get AI-powered answers
-- **Multi-format Support**: Handles PDF, Markdown, and Text files
-- **Vector Search**: Uses Pinecone for efficient document retrieval
-- **Easy Dataset Management**: Upload, manage, and update your knowledge base through a web interface
+- **Multi-Mode Conversations**: Five distinct conversation styles (Interview, Story, TL;DR, Humble Brag, Self-Reflection)
+- **Intelligent Chat Interface**: AI-powered responses with real-time streaming and source attribution
+- **Multi-format Document Support**: Handles PDF, Markdown, and Text files with intelligent chunking
+- **Vector Search**: Uses Pinecone for efficient semantic document retrieval
+- **Real-time Streaming**: Live response generation with progress indicators
+- **Source Attribution**: Clickable source chips showing which documents informed each response
+- **Easy Dataset Management**: Web-based admin panel for uploading, managing, and updating your knowledge base
 - **Incremental Updates**: Smart ingestion that only processes changed files
-- **Admin Panel**: Web-based interface for managing your dataset
+- **Responsive Design**: Modern UI with Tailwind CSS and Radix UI components
+- **Error Handling**: Graceful error handling with retry mechanisms
 
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Setup Environment
 
@@ -32,7 +36,7 @@ npm install
 ### 3. Add Your Documents
 
 Place your documents in the `src/data/` directory. Supported formats:
-- **PDF** (.pdf) - Academic papers, reports, books
+- **PDF** (.pdf) - Academic papers, reports, books, resumes
 - **Markdown** (.md) - Notes, documentation, articles
 - **Text** (.txt) - Simple text documents
 
@@ -52,16 +56,29 @@ npm run dev
 
 Visit `http://localhost:3000` to start chatting with your knowledge base!
 
-## Dataset Management
+## 🎭 Conversation Modes
+
+The agent supports five distinct conversation styles to match different contexts:
+
+- **Interview Mode**: Professional responses for job interviews and networking
+- **Story Mode**: Narrative storytelling about experiences and achievements
+- **TL;DR Mode**: Concise, bullet-point summaries of key information
+- **Humble Brag Mode**: Confident but modest presentation of accomplishments
+- **Self-Reflection Mode**: Introspective analysis of patterns and growth
+
+Each mode uses specialized prompting to generate contextually appropriate responses while maintaining consistency with your personal knowledge base.
+
+## 📊 Dataset Management
 
 ### Web Interface
 
-Access the admin panel at `/admin` to:
-- **Upload new documents** via drag & drop
-- **View all dataset files** with metadata
-- **Run ingestion processes** with one click
+Access the comprehensive admin panel at `/admin` to:
+- **Upload new documents** via drag & drop with progress tracking
+- **View all dataset files** with metadata and processing status
+- **Run ingestion processes** with one-click execution
 - **Download or delete files** as needed
-- **Monitor ingestion status** in real-time
+- **Monitor ingestion status** in real-time with detailed progress
+- **Manage file organization** with automatic categorization
 
 ### Command Line Tools
 
@@ -102,7 +119,7 @@ The system automatically categorizes documents based on filename patterns:
 - **Project**: `readme`, `project`
 - **Notes**: `style`, `values`, `notes`
 
-## Workflow
+## 🔄 Workflow
 
 ### Adding New Documents
 
@@ -123,28 +140,94 @@ The system automatically categorizes documents based on filename patterns:
 - **Backup**: Keep copies of important documents outside the system
 - **Metadata**: Use Markdown front-matter for custom categorization
 
-## Technical Details
+## 🏗️ Technical Architecture
 
-### Architecture
+### Frontend Stack
 
-- **Frontend**: Next.js 15 with React 19
-- **AI**: OpenAI GPT-4 for chat, text-embedding-3-small for embeddings
+- **Framework**: Next.js 15 with App Router
+- **UI Library**: React 19 with modern hooks
+- **Styling**: Tailwind CSS 4 with custom animations
+- **Components**: Radix UI primitives for accessibility
+- **State Management**: React hooks with custom service classes
+
+### AI & Backend
+
+- **Language Model**: OpenAI GPT-4 for intelligent conversations
+- **Embeddings**: OpenAI text-embedding-3-small (1536 dimensions)
 - **Vector Database**: Pinecone for similarity search
-- **File Processing**: PDF.js for PDFs, unified for Markdown
+- **File Processing**: PDF.js for PDFs, unified for Markdown parsing
 
-### File Processing
+### File Processing Pipeline
 
-- **Chunking**: Documents are split into 1200-character chunks with 200-character overlap
-- **Embeddings**: Each chunk is converted to a 1536-dimensional vector
-- **Metadata**: Preserves file source, title, and chunk information
+- **Chunking**: Documents split into 1200-character chunks with 200-character overlap
+- **Embeddings**: Each chunk converted to 1536-dimensional vector
+- **Metadata**: Preserves file source, title, chunk information, and processing timestamps
+- **Batch Processing**: Processes embeddings in batches of 32 for efficiency
 
-### Performance
+### Performance Features
 
-- **Batch Processing**: Processes embeddings in batches of 32
 - **Incremental Updates**: Only processes changed files by default
-- **Progress Tracking**: Real-time progress updates during ingestion
+- **Real-time Streaming**: Live response generation with progress indicators
+- **Progress Tracking**: Detailed progress updates during ingestion
+- **Error Recovery**: Graceful handling of API failures with retry mechanisms
 
-## Troubleshooting
+## 🛠️ Development
+
+### Project Structure
+
+```
+src/
+├── app/                 # Next.js app router
+│   ├── admin/          # Admin panel pages
+│   ├── api/            # API endpoints (chat, dataset, upload, ingest)
+│   └── ...
+├── components/         # React components
+│   ├── ui/            # Reusable UI components (buttons, inputs, etc.)
+│   ├── ChatWindow.tsx # Main chat interface
+│   ├── Composer.tsx   # Message input component
+│   ├── ModeSwitcher.tsx # Conversation mode selector
+│   ├── AdminPanel.tsx # Dataset management interface
+│   └── ...
+├── data/              # Document storage
+├── lib/               # Core services and utilities
+│   ├── chat-service.ts # AI chat orchestration
+│   ├── pine.ts        # Pinecone vector database operations
+│   └── ...
+└── ...
+scripts/
+└── ingest.ts          # Document ingestion and processing
+```
+
+### Available Scripts
+
+```bash
+# Development
+npm run dev            # Start development server with Turbopack
+npm run build          # Build for production
+npm run start          # Start production server
+npm run lint           # Run ESLint
+
+# Document Management
+npm run ingest         # Process all documents
+npm run ingest:dry     # Preview what would be processed
+npm run ingest:clear   # Force reprocess all files
+npm run ingest:incremental # Only process changed files
+npm run dataset:status # Check dataset processing status
+
+# Setup (Platform-specific)
+npm run setup          # Unix/Linux setup
+npm run setup:win      # Windows setup
+```
+
+### Adding New Features
+
+1. **New File Types**: Extend `loadDocument()` in `scripts/ingest.ts`
+2. **UI Components**: Add to `src/components/` directory
+3. **API Endpoints**: Create in `src/app/api/` directory
+4. **Metadata**: Extend `DocumentMetadata` interface
+5. **Conversation Modes**: Add new modes to `constants.ts`
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
@@ -152,16 +235,23 @@ The system automatically categorizes documents based on filename patterns:
 - Check your `.env` file has correct API keys
 - Ensure Pinecone index exists and has correct dimensions (1536)
 - Verify documents are in supported formats
+- Check file permissions in `src/data/` directory
 
 **Files Not Appearing**
-- Check file permissions in `src/data/` directory
 - Ensure files have supported extensions (.pdf, .md, .txt)
 - Run `npm run ingest:clear` to force reprocessing
+- Check browser console for upload errors
 
 **Chat Not Finding Information**
 - Verify ingestion completed successfully
 - Check Pinecone index has vectors
 - Try re-ingesting with `npm run ingest:clear`
+- Ensure documents contain relevant content
+
+**Streaming Issues**
+- Check OpenAI API key and rate limits
+- Verify network connectivity
+- Check browser console for errors
 
 ### Debug Mode
 
@@ -171,34 +261,7 @@ Enable detailed logging by adding `--dry-run` to see what would be processed:
 npm run ingest:dry
 ```
 
-## Development
-
-### Project Structure
-
-```
-src/
-├── app/                 # Next.js app router
-│   ├── admin/          # Admin panel pages
-│   ├── api/            # API endpoints
-│   └── ...
-├── components/         # React components
-│   ├── ui/            # UI components
-│   └── ...
-├── data/              # Document storage
-├── lib/               # Utility functions
-└── ...
-scripts/
-└── ingest.ts          # Document ingestion script
-```
-
-### Adding New Features
-
-1. **New File Types**: Extend `loadDocument()` in `scripts/ingest.ts`
-2. **UI Components**: Add to `src/components/` directory
-3. **API Endpoints**: Create in `src/app/api/` directory
-4. **Metadata**: Extend `DocumentMetadata` interface
-
-### Testing
+## 🧪 Testing
 
 ```bash
 # Run linting
@@ -211,7 +274,7 @@ npm run build
 npm start
 ```
 
-## Contributing
+## 📝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -219,11 +282,11 @@ npm start
 4. Test thoroughly
 5. Submit a pull request
 
-## License
+## 📄 License
 
 This project is for personal use. Please respect the privacy and intellectual property of the documents you process.
 
-## Support
+## 🆘 Support
 
 For issues or questions:
 1. Check the troubleshooting section above
@@ -232,4 +295,6 @@ For issues or questions:
 
 ---
 
-**Happy knowledge building! 🚀**
+**Ready for artifact documentation! 🚀**
+
+*This README has been finalized to reflect the complete, production-ready state of the Personal Codex Agent. All features, modes, and technical details are now documented and ready for artifact documentation to be added.*
