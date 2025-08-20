@@ -162,12 +162,12 @@ export default function Home() {
       <main className="flex-1 flex flex-col">
         <div className="container mx-auto flex-1 grid grid-cols-1 gap-4 p-4 lg:grid-cols-[1fr_340px] lg:gap-6">
           {/* Left Column - Chat Area */}
-          <div className="flex flex-col rounded-2xl border bg-card">
+          <div className="flex flex-col rounded-2xl border bg-card h-fit">
             <div className="p-4 border-b flex-shrink-0">
               <ModeSwitcher onModeChange={handleModeChange} initialMode={selectedMode} />
             </div>
             
-            <div className="chat-messages-container">
+            <div className="chat-messages-container flex-1 min-h-0">
               <ChatWindow 
                 messages={messages} 
                 selectedMode={selectedMode}

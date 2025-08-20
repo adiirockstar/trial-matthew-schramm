@@ -91,7 +91,7 @@ export function ChatWindow({
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-[1210px] flex-col">
       {/* Screen reader announcements */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}

@@ -31,7 +31,7 @@ export function SidebarPanel() {
           <CardContent className="space-y-4">
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Matthew's Codex is an intelligent personal knowledge assistant that leverages AI to provide 
+                Matthew&apos;s Codex is an intelligent personal knowledge assistant that leverages AI to provide 
                 instant access to my professional background, skills, and experiences.
               </p>
               
