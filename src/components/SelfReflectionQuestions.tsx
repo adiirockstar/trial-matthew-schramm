@@ -12,7 +12,7 @@ export function SelfReflectionQuestions({
   onQuestionClick, 
   onQuestionInsert 
 }: SelfReflectionQuestionsProps) {
-  const [behavior, setBehavior] = useState<"insert" | "send">("insert");
+  const [behavior, setBehavior] = useState<"insert" | "send">("send");
 
   const reflectionQuestions = [
     {
@@ -58,15 +58,6 @@ export function SelfReflectionQuestions({
           </label>
           <div className="flex gap-2">
             <Button
-              variant={behavior === "insert" ? "default" : "outline"}
-              size="sm"
-              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
-              onClick={() => setBehavior("insert")}
-            >
-              <Edit3 className="h-3 w-3 mr-1" />
-              Insert
-            </Button>
-            <Button
               variant={behavior === "send" ? "default" : "outline"}
               size="sm"
               className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
@@ -74,6 +65,15 @@ export function SelfReflectionQuestions({
             >
               <Send className="h-3 w-3 mr-1" />
               Send
+            </Button>
+            <Button
+              variant={behavior === "insert" ? "default" : "outline"}
+              size="sm"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
+              onClick={() => setBehavior("insert")}
+            >
+              <Edit3 className="h-3 w-3 mr-1" />
+              Insert
             </Button>
           </div>
         </div>

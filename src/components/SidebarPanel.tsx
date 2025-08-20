@@ -70,7 +70,11 @@ export function SidebarPanel() {
             </div>
             
             <div className="pt-2">
-              <Button variant="outline" className="w-full text-xs lg:text-sm">
+              <Button 
+                variant="outline" 
+                className="w-full text-xs lg:text-sm"
+                onClick={() => window.open('https://github.com/Schramm2/personal-codex-agent?tab=readme-ov-file#matthews-personal-codex-agent', '_blank')}
+              >
                 View README
               </Button>
             </div>

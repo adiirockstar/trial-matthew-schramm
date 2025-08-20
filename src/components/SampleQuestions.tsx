@@ -19,7 +19,7 @@ export function SampleQuestions({
   onModeChange,
   selectedMode = "Interview"
 }: SampleQuestionsProps) {
-  const [behavior, setBehavior] = useState<"insert" | "send">("insert");
+  const [behavior, setBehavior] = useState<"insert" | "send">("send");
 
   if (questions.length === 0) {
     return (
@@ -86,15 +86,6 @@ export function SampleQuestions({
           </label>
           <div className="flex gap-2">
             <Button
-              variant={behavior === "insert" ? "default" : "outline"}
-              size="sm"
-              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
-              onClick={() => setBehavior("insert")}
-            >
-              <Edit3 className="h-3 w-3 mr-1" />
-              Insert
-            </Button>
-            <Button
               variant={behavior === "send" ? "default" : "outline"}
               size="sm"
               className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
@@ -102,6 +93,15 @@ export function SampleQuestions({
             >
               <Send className="h-3 w-3 mr-1" />
               Send
+            </Button>
+            <Button
+              variant={behavior === "insert" ? "default" : "outline"}
+              size="sm"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
+              onClick={() => setBehavior("insert")}
+            >
+              <Edit3 className="h-3 w-3 mr-1" />
+              Insert
             </Button>
           </div>
         </div>
