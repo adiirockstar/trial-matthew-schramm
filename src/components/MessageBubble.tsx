@@ -106,16 +106,16 @@ export function MessageBubble({ message, onRetry, onDelete, onStopStreaming }: M
   const isUser = message.role === "user";
 
   return (
-    <div className={`group flex gap-3 message-bubble ${isUser ? "justify-end" : "justify-start"} message-enter`}>
+    <div className={`group flex gap-2 lg:gap-3 message-bubble ${isUser ? "justify-end" : "justify-start"} message-enter`}>
       {!isUser && (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
+        <div className="flex h-6 w-6 lg:h-8 lg:w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs lg:text-sm font-medium">
           A
         </div>
       )}
       
-      <div className={`flex max-w-[70ch] flex-col gap-2 ${isUser ? "items-end" : "items-start"}`}>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">
+      <div className={`flex max-w-[70ch] flex-col gap-1.5 lg:gap-2 ${isUser ? "items-end" : "items-start"}`}>
+        <div className="flex items-center gap-1.5 lg:gap-2">
+          <span className="text-xs lg:text-sm font-medium">
             {isUser ? "You" : "Matthew's Codex"}
           </span>
           <span className="text-xs text-muted-foreground">
@@ -130,7 +130,7 @@ export function MessageBubble({ message, onRetry, onDelete, onStopStreaming }: M
         
         <div className="relative">
           <div
-            className={`rounded-2xl px-4 py-3 text-sm ${
+            className={`rounded-2xl px-3 lg:px-4 py-2 lg:py-3 text-xs lg:text-sm ${
               isUser
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted text-foreground"
@@ -173,7 +173,7 @@ export function MessageBubble({ message, onRetry, onDelete, onStopStreaming }: M
       </div>
       
       {isUser && (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-muted-foreground text-sm font-medium">
+        <div className="flex h-6 w-6 lg:h-8 lg:w-8 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs lg:text-sm font-medium">
           U
         </div>
       )}

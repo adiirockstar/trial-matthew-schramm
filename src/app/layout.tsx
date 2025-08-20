@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description: "A personal knowledge assistant that helps you learn about Matthew's skills, experience, and values through natural conversation.",
     type: "website",
   },
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
 };
 
 export default function RootLayout({
@@ -31,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -9,21 +9,21 @@ interface StreamingIndicatorProps {
 
 export function StreamingIndicator({ onStop, tokens, latency }: StreamingIndicatorProps) {
   return (
-    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg animate-in fade-in">
+    <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 p-2 lg:p-3 bg-muted/50 rounded-lg animate-in fade-in">
       <div className="flex items-center gap-1">
         <div className="flex gap-1">
           <div className="w-2 h-2 bg-primary rounded-full typing-dot" />
           <div className="w-2 h-2 bg-primary rounded-full typing-dot" />
           <div className="w-2 h-2 bg-primary rounded-full typing-dot" />
         </div>
-        <span className="text-sm text-muted-foreground ml-2">Thinking...</span>
+        <span className="text-xs lg:text-sm text-muted-foreground ml-2">Thinking...</span>
       </div>
       
       <Button
         variant="outline"
         size="sm"
         onClick={onStop}
-        className="ml-auto action-button"
+        className="lg:ml-auto action-button text-xs px-2 lg:px-3 py-1.5 lg:py-2"
       >
         <Square className="h-3 w-3 mr-1" />
         Stop

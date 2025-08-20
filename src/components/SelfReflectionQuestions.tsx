@@ -45,9 +45,9 @@ export function SelfReflectionQuestions({
 
   return (
     <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-      <CardHeader className="space-y-4">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Brain className="h-5 w-5 text-primary" />
+      <CardHeader className="space-y-3 lg:space-y-4">
+        <CardTitle className="text-base lg:text-lg flex items-center gap-2">
+          <Brain className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
           Self-Reflection Questions
         </CardTitle>
         
@@ -60,7 +60,7 @@ export function SelfReflectionQuestions({
             <Button
               variant={behavior === "insert" ? "default" : "outline"}
               size="sm"
-              className="text-xs px-3 py-2"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
               onClick={() => setBehavior("insert")}
             >
               <Edit3 className="h-3 w-3 mr-1" />
@@ -69,7 +69,7 @@ export function SelfReflectionQuestions({
             <Button
               variant={behavior === "send" ? "default" : "outline"}
               size="sm"
-              className="text-xs px-3 py-2"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
               onClick={() => setBehavior("send")}
             >
               <Send className="h-3 w-3 mr-1" />
@@ -78,27 +78,27 @@ export function SelfReflectionQuestions({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2 lg:space-y-3">
         {reflectionQuestions.map((item, index) => (
-          <div key={index} className="space-y-2">
+          <div key={index} className="space-y-1.5 lg:space-y-2">
             <div className="flex items-center gap-2 text-xs font-medium text-primary">
               {item.icon}
               <span className="uppercase tracking-wide">{item.category}</span>
             </div>
             <Button
               variant="outline"
-              className="w-full justify-start text-left h-auto min-h-[4rem] p-3 whitespace-normal text-wrap group hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
+              className="w-full justify-start text-left h-auto min-h-[3.5rem] lg:min-h-[4rem] p-2 lg:p-3 whitespace-normal text-wrap group hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
               onClick={() => handleQuestionAction(item.question)}
             >
               <div className="flex flex-col items-start gap-1">
-                <span className="text-sm font-medium leading-relaxed">{item.question}</span>
+                <span className="text-xs lg:text-sm font-medium leading-relaxed">{item.question}</span>
                 <span className="text-xs text-muted-foreground">{item.description}</span>
               </div>
               <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {behavior === "insert" ? (
-                  <Edit3 className="h-4 w-4 text-muted-foreground" />
+                  <Edit3 className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground" />
                 ) : (
-                  <Send className="h-4 w-4 text-muted-foreground" />
+                  <Send className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground" />
                 )}
               </div>
             </Button>

@@ -7,7 +7,7 @@ export function SidebarPanel() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Mobile Collapse Button */}
       <div className="lg:hidden">
         <Button
@@ -20,24 +20,24 @@ export function SidebarPanel() {
         </Button>
       </div>
 
-      <div className={`space-y-6 ${isCollapsed ? 'lg:block hidden' : 'block'}`}>
+      <div className={`space-y-4 lg:space-y-6 ${isCollapsed ? 'lg:block hidden' : 'block'}`}>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <FileText className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+              <FileText className="h-4 w-4 lg:h-5 lg:w-5" />
               About
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
+          <CardContent className="space-y-3 lg:space-y-4">
+            <div className="space-y-2 lg:space-y-3">
+              <p className="text-xs lg:text-sm text-muted-foreground">
                 Matthew&apos;s Codex is an intelligent personal knowledge assistant that leverages AI to provide 
                 instant access to my professional background, skills, and experiences.
               </p>
               
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm">Key Features:</h4>
-                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+              <div className="space-y-1.5 lg:space-y-2">
+                <h4 className="font-medium text-xs lg:text-sm">Key Features:</h4>
+                <ul className="text-xs text-muted-foreground space-y-0.5 lg:space-y-1 ml-2">
                   <li>• Multi-mode conversations (Interview, Story, TL;DR, Humble Brag)</li>
                   <li>• Self-reflection prompts for deeper insights</li>
                   <li>• AI-powered document analysis and retrieval</li>
@@ -46,9 +46,9 @@ export function SidebarPanel() {
                 </ul>
               </div>
 
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm">Technical Stack:</h4>
-                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+              <div className="space-y-1.5 lg:space-y-2">
+                <h4 className="font-medium text-xs lg:text-sm">Technical Stack:</h4>
+                <ul className="text-xs text-muted-foreground space-y-0.5 lg:space-y-1 ml-2">
                   <li>• Frontend: Next.js 14, React 18, TypeScript</li>
                   <li>• Styling: Tailwind CSS, shadcn/ui components</li>
                   <li>• AI: OpenAI GPT-4o-mini integration</li>
@@ -57,9 +57,9 @@ export function SidebarPanel() {
                 </ul>
               </div>
 
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm">Architecture:</h4>
-                <ul className="text-xs text-muted-foreground space-y-1 ml-2">
+              <div className="space-y-1.5 lg:space-y-2">
+                <h4 className="font-medium text-xs lg:text-sm">Architecture:</h4>
+                <ul className="text-xs text-muted-foreground space-y-0.5 lg:space-y-1 ml-2">
                   <li>• Server-side rendering with Next.js App Router</li>
                   <li>• RESTful API endpoints for chat and file management</li>
                   <li>• Real-time streaming with Server-Sent Events</li>
@@ -70,7 +70,7 @@ export function SidebarPanel() {
             </div>
             
             <div className="pt-2">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full text-xs lg:text-sm">
                 View README
               </Button>
             </div>

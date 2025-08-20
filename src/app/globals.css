@@ -241,7 +241,7 @@
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .message-bubble {
-    max-width: 85%;
+    max-width: 90%;
   }
   
   .composer-input {
@@ -252,6 +252,24 @@
     min-height: 44px;
     min-width: 44px;
   }
+  
+  /* Ensure proper touch scrolling on mobile */
+  .chat-messages-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* iPad optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .message-bubble {
+    max-width: 85%;
+  }
+  
+  .chat-messages-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
 }
 
 /* Smooth scrolling */
@@ -261,11 +279,13 @@ html {
 
 /* Chat window height and scroll behavior */
 .chat-messages-container {
-  height: 600px; /* Fixed height to match sidebar */
-  max-height: 600px;
+  height: 1000px;
+  max-height: 1000px;
   overflow: hidden;
   min-height: 0;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Responsive height adjustments */
@@ -299,4 +319,429 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground));
+}
+
+/* Mobile-specific scrollbar */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted) / 0.6);
+  }
+}
+
+/* Ensure proper touch behavior on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Improve mobile input experience */
+@media (max-width: 768px) {
+  input, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Mobile-specific improvements for chat scrolling */
+@media (max-width: 768px) {
+  .chat-messages-container {
+    /* Perfect mobile scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    overflow-x: hidden;
+    /* Fixed height for mobile */
+    height: 400px;
+    max-height: 400px;
+    /* Better mobile performance */
+    will-change: scroll-position;
+    /* Prevent mobile zoom issues */
+    touch-action: pan-y pinch-zoom;
+  }
+  
+  /* Mobile-optimized message layout */
+  .message-bubble {
+    margin-bottom: 0.75rem;
+    /* Better mobile spacing */
+    padding: 0.5rem;
+  }
+  
+  /* Mobile button improvements */
+  .action-button {
+    min-height: 44px;
+    min-width: 44px;
+    /* Better touch feedback */
+    transition: all 0.15s ease;
+  }
+  
+  /* Mobile scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted) / 0.6);
+    border-radius: 2px;
+  }
+  
+  /* Mobile input improvements */
+  input, textarea {
+    font-size: 16px;
+    /* Better mobile input experience */
+    -webkit-appearance: none;
+    border-radius: 0.5rem;
+  }
+  
+  /* Mobile card improvements */
+  .card {
+    border-radius: 1rem;
+  }
+  
+  /* Mobile spacing improvements */
+  .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem;
+  }
+  
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+}
+
+/* iPad-specific optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .chat-messages-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    height: 500px;
+    max-height: 500px;
+    /* iPad-specific improvements */
+    touch-action: pan-y pinch-zoom;
+  }
+  
+  .message-bubble {
+    margin-bottom: 1rem;
+  }
+  
+  /* iPad button sizing */
+  .action-button {
+    min-height: 40px;
+    min-width: 40px;
+  }
+}
+
+/* Ensure proper viewport handling on all devices */
+@media (max-width: 1024px) {
+  .chat-messages-container {
+    height: 500px;
+    max-height: 500px;
+    /* Better mobile performance */
+    will-change: scroll-position;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  button, 
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better mobile spacing */
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Prevent text selection on mobile for better UX */
+@media (max-width: 768px) {
+  .message-bubble {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection in message content */
+  .message-bubble .prose {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Final mobile optimizations for perfect responsiveness */
+@media (max-width: 768px) {
+  /* Ensure proper mobile chat experience */
+  .chat-messages-container {
+    /* Perfect mobile scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    overflow-x: hidden;
+    /* Mobile-optimized height */
+    min-height: calc(100vh - 20rem);
+    /* Better mobile performance */
+    will-change: scroll-position;
+    /* Prevent mobile zoom issues */
+    touch-action: pan-y pinch-zoom;
+  }
+  
+  /* Mobile-optimized message layout */
+  .message-bubble {
+    margin-bottom: 0.75rem;
+    /* Better mobile spacing */
+    padding: 0.5rem;
+  }
+  
+  /* Mobile button improvements */
+  .action-button {
+    min-height: 44px;
+    min-width: 44px;
+    /* Better touch feedback */
+    transition: all 0.15s ease;
+  }
+  
+  /* Mobile scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted) / 0.6);
+    border-radius: 2px;
+  }
+  
+  /* Mobile input improvements */
+  input, textarea {
+    font-size: 16px;
+    /* Better mobile input experience */
+    -webkit-appearance: none;
+    border-radius: 0.5rem;
+  }
+  
+  /* Mobile card improvements */
+  .card {
+    border-radius: 1rem;
+  }
+  
+  /* Mobile spacing improvements */
+  .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem;
+  }
+  
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+}
+
+/* iPad-specific optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .chat-messages-container {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    min-height: calc(100vh - 18rem);
+    /* iPad-specific improvements */
+    touch-action: pan-y pinch-zoom;
+  }
+  
+  .message-bubble {
+    margin-bottom: 1rem;
+  }
+  
+  /* iPad button sizing */
+  .action-button {
+    min-height: 40px;
+    min-width: 40px;
+  }
+}
+
+/* Ensure proper viewport handling on all devices */
+@media (max-width: 1024px) {
+  .chat-messages-container {
+    height: 100%;
+    max-height: 100%;
+    min-height: calc(100vh - 16rem);
+    /* Better mobile performance */
+    will-change: scroll-position;
+  }
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  button, 
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better mobile spacing */
+  .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Prevent text selection on mobile for better UX */
+@media (max-width: 768px) {
+  .message-bubble {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Allow text selection in message content */
+  .message-bubble .prose {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Mobile-specific performance improvements */
+@media (max-width: 768px) {
+  /* Optimize animations for mobile */
+  .animate-in,
+  .slide-in-from-bottom-2,
+  .fade-in,
+  .scale-in,
+  .message-enter,
+  .message-exit {
+    animation-duration: 0.2s;
+  }
+  
+  /* Better mobile transitions */
+  * {
+    transition-duration: 0.15s;
+  }
+  
+  /* Mobile-specific hover states */
+  @media (hover: none) {
+    .hover\:bg-muted:hover {
+      background-color: transparent;
+    }
+    
+    .hover\:border-primary\/50:hover {
+      border-color: hsl(var(--border));
+    }
+    
+    .hover\:bg-primary\/5:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+/* Ensure proper mobile keyboard handling */
+@media (max-width: 768px) {
+  /* Prevent mobile zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    font-size: 16px;
+    -webkit-appearance: none;
+    border-radius: 0.5rem;
+  }
+  
+  /* Better mobile form handling */
+  form {
+    /* Prevent mobile form zoom */
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Additional chat container improvements */
+.chat-messages-container {
+  /* Ensure proper flex behavior */
+  flex: 1 1 auto;
+  /* Prevent height issues */
+  min-height: 0;
+  /* Ensure scrolling works */
+  overflow: hidden;
+}
+
+/* ScrollArea improvements */
+[data-radix-scroll-area-viewport] {
+  /* Ensure proper height inheritance */
+  height: 100% !important;
+  /* Enable smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+/* Ensure chat content doesn't overflow */
+.chat-messages-container > div {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Responsive height adjustments for main chat container */
+@media (max-width: 1024px) {
+  .chat-container {
+    height: calc(100vh - 10rem) !important;
+    min-height: 500px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    height: calc(100vh - 8rem) !important;
+    min-height: 400px !important;
+  }
+}
+
+/* Ensure proper mobile height handling */
+@media (max-width: 768px) {
+  /* Mobile chat container */
+  .chat-container {
+    height: calc(100vh - 8rem) !important;
+    min-height: 400px !important;
+  }
+  
+  /* Mobile chat messages container */
+  .chat-messages-container {
+    height: 400px !important;
+    max-height: 400px !important;
+    min-height: 400px !important;
+  }
+}
+
+/* iPad height handling */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .chat-container {
+    height: calc(100vh - 10rem) !important;
+    min-height: 500px !important;
+  }
+  
+  .chat-messages-container {
+    height: 500px !important;
+    max-height: 500px !important;
+    min-height: 500px !important;
+  }
 }

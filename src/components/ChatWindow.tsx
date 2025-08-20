@@ -91,25 +91,30 @@ export function ChatWindow({
   };
 
   return (
-    <div className="flex h-[1210px] flex-col">
+    <div className="flex flex-col h-full">
       {/* Screen reader announcements */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </div>
       
-      <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
+      <div className="flex items-center justify-between p-3 lg:p-4 border-b flex-shrink-0">
         <h2 className="text-lg font-semibold">Chat</h2>
       </div>
 
       <ScrollArea 
-        className="flex-1 p-4 min-h-0 overflow-auto" 
+        className="flex-1 p-3 lg:p-4 min-h-0 overflow-auto touch-auto overscroll-contain" 
         ref={scrollAreaRef}
         onScroll={handleScroll}
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain',
+          height: '100%'
+        }}
       >
         {messages.length === 0 ? (
           getEmptyStateContent()
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6 pb-4">
             {messages.map((message) => (
               <MessageBubble 
                 key={message.id} 

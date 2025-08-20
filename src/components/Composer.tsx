@@ -64,7 +64,7 @@ export function Composer({ onSendMessage, disabled = false, placeholder = "Type 
   }, [inputValue, isMultiline]);
 
   return (
-    <div className="border-t bg-background p-4">
+    <div className="border-t bg-background p-3 lg:p-4">
       <form onSubmit={handleSubmit} className="flex gap-2">
         {isMultiline ? (
           <textarea
@@ -73,7 +73,7 @@ export function Composer({ onSendMessage, disabled = false, placeholder = "Type 
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="flex-1 resize-none rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] max-h-[120px] composer-input"
+            className="flex-1 resize-none rounded-md border border-input bg-background px-2 lg:px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] max-h-[120px] composer-input"
             disabled={disabled}
             rows={1}
           />

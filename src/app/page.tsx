@@ -160,10 +160,16 @@ export default function Home() {
       <Header />
       
       <main className="flex-1 flex flex-col">
-        <div className="container mx-auto flex-1 grid grid-cols-1 gap-4 p-4 lg:grid-cols-[1fr_340px] lg:gap-6">
+        <div className="container mx-auto flex-1 grid grid-cols-1 gap-3 p-3 lg:grid-cols-[1fr_340px] lg:gap-6 lg:p-4">
           {/* Left Column - Chat Area */}
-          <div className="flex flex-col rounded-2xl border bg-card h-fit">
-            <div className="p-4 border-b flex-shrink-0">
+          <div 
+            className="flex flex-col rounded-2xl border bg-card order-2 lg:order-1 chat-container" 
+            style={{ 
+              height: 'calc(100vh - 12rem)',
+              minHeight: '1300px'
+            }}
+          >
+            <div className="p-3 lg:p-4 border-b flex-shrink-0">
               <ModeSwitcher onModeChange={handleModeChange} initialMode={selectedMode} />
             </div>
             
@@ -190,7 +196,7 @@ export default function Home() {
           </div>
           
           {/* Right Column - Sidebar */}
-          <div className="space-y-4 lg:space-y-6">
+          <div className="space-y-3 lg:space-y-6 order-1 lg:order-2">
             {selectedMode === "Self-Reflection" ? (
               <SelfReflectionQuestions 
                 onQuestionClick={handleQuestionClick}

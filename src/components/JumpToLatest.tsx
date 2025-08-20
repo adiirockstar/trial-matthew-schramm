@@ -14,9 +14,9 @@ export function JumpToLatest({ onClick, visible }: JumpToLatestProps) {
       variant="secondary"
       size="sm"
       onClick={onClick}
-      className="fixed bottom-20 right-4 z-50 shadow-lg animate-in slide-in-from-bottom-2"
+      className="fixed bottom-16 lg:bottom-20 right-3 lg:right-4 z-50 shadow-lg animate-in slide-in-from-bottom-2 text-xs lg:text-sm px-2 lg:px-3 py-1.5 lg:py-2"
     >
-      <ArrowDown className="h-4 w-4 mr-1" />
+      <ArrowDown className="h-3 w-3 lg:h-4 lg:w-4 mr-1" />
       Jump to latest
     </Button>
   );

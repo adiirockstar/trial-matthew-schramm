@@ -28,7 +28,7 @@ export function MessageActions({ messageText, onRetry, onDelete, isUser = false 
         variant="ghost"
         size="sm"
         onClick={handleCopy}
-        className="h-6 w-6 p-0 hover:bg-muted action-button"
+        className="h-7 w-7 lg:h-6 lg:w-6 p-0 hover:bg-muted action-button"
         title="Copy message"
         aria-label="Copy message"
       >
@@ -41,7 +41,7 @@ export function MessageActions({ messageText, onRetry, onDelete, isUser = false 
           variant="ghost"
           size="sm"
           onClick={onRetry}
-          className="h-6 w-6 p-0 hover:bg-muted action-button"
+          className="h-7 w-7 lg:h-6 lg:w-6 p-0 hover:bg-muted action-button"
           title="Retry message"
           aria-label="Retry message"
         >
@@ -55,7 +55,7 @@ export function MessageActions({ messageText, onRetry, onDelete, isUser = false 
           variant="ghost"
           size="sm"
           onClick={onDelete}
-          className="h-6 w-6 p-0 hover:bg-muted hover:text-destructive action-button"
+          className="h-7 w-7 lg:h-6 lg:w-6 p-0 hover:bg-muted hover:text-destructive action-button"
           title="Delete message"
           aria-label="Delete message"
         >

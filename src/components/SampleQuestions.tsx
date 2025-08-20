@@ -50,8 +50,8 @@ export function SampleQuestions({
 
   return (
     <Card>
-      <CardHeader className="space-y-4">
-        <CardTitle className="text-lg">Sample Questions</CardTitle>
+      <CardHeader className="space-y-3 lg:space-y-4">
+        <CardTitle className="text-base lg:text-lg">Sample Questions</CardTitle>
         
         {/* Mode Selection - Only show if onModeChange is provided */}
         {onModeChange && (
@@ -88,7 +88,7 @@ export function SampleQuestions({
             <Button
               variant={behavior === "insert" ? "default" : "outline"}
               size="sm"
-              className="text-xs px-3 py-2"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
               onClick={() => setBehavior("insert")}
             >
               <Edit3 className="h-3 w-3 mr-1" />
@@ -97,7 +97,7 @@ export function SampleQuestions({
             <Button
               variant={behavior === "send" ? "default" : "outline"}
               size="sm"
-              className="text-xs px-3 py-2"
+              className="text-xs px-2 lg:px-3 py-1.5 lg:py-2"
               onClick={() => setBehavior("send")}
             >
               <Send className="h-3 w-3 mr-1" />
@@ -111,15 +111,15 @@ export function SampleQuestions({
           <Button
             key={index}
             variant="outline"
-            className="w-full justify-start text-left h-auto min-h-[3rem] p-3 whitespace-normal text-wrap group hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
+            className="w-full justify-start text-left h-auto min-h-[2.5rem] lg:min-h-[3rem] p-2 lg:p-3 whitespace-normal text-wrap group hover:border-primary/50 hover:bg-primary/5 transition-all duration-200"
             onClick={() => handleQuestionAction(question)}
           >
-            <span className="text-sm leading-relaxed">{question}</span>
+            <span className="text-xs lg:text-sm leading-relaxed">{question}</span>
             <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               {behavior === "insert" ? (
-                <Edit3 className="h-4 w-4 text-muted-foreground" />
+                <Edit3 className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground" />
               ) : (
-                <Send className="h-4 w-4 text-muted-foreground" />
+                <Send className="h-3 w-3 lg:h-4 lg:w-4 text-muted-foreground" />
               )}
             </div>
           </Button>
