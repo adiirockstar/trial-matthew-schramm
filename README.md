@@ -1,207 +1,235 @@
-# Matthew's Codex - Personal Knowledge Assistant
+# Matthew's Personal Codex Agent
 
-A personal knowledge assistant built with Next.js + Tailwind + shadcn/ui. The UI is complete and ready for backend functionality implementation.
+A personal knowledge assistant that uses AI to help you access and query your personal documents and knowledge base.
 
 ## Features
 
-- **Personal Chat Interface**: Clean, modern chat UI for personal knowledge sharing
-- **Mode Switching**: Toggle between different conversation styles (Interview, Story, TL;DR, Humble Brag)
-- **Sample Questions**: Dynamic question system ready for backend integration
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Accessibility**: Built with semantic HTML and ARIA support
+- **Intelligent Chat Interface**: Ask questions about your documents and get AI-powered answers
+- **Multi-format Support**: Handles PDF, Markdown, and Text files
+- **Vector Search**: Uses Pinecone for efficient document retrieval
+- **Easy Dataset Management**: Upload, manage, and update your knowledge base through a web interface
+- **Incremental Updates**: Smart ingestion that only processes changed files
+- **Admin Panel**: Web-based interface for managing your dataset
 
-## Tech Stack
+## Quick Start
 
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **Icons**: Lucide React
+### 1. Setup Environment
 
-## Getting Started
+Create a `.env` file in the root directory:
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_INDEX=your_index_name_here
+```
 
-2. Run the development server:
-   ```bash
-   npm run dev
-   ```
+### 2. Install Dependencies
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+```bash
+npm install
+```
 
-## Project Structure
+### 3. Add Your Documents
+
+Place your documents in the `src/data/` directory. Supported formats:
+- **PDF** (.pdf) - Academic papers, reports, books
+- **Markdown** (.md) - Notes, documentation, articles
+- **Text** (.txt) - Simple text documents
+
+### 4. Run Initial Ingestion
+
+```bash
+npm run ingest
+```
+
+This will process all your documents and create vector embeddings in Pinecone.
+
+### 5. Start the Application
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:3000` to start chatting with your knowledge base!
+
+## Dataset Management
+
+### Web Interface
+
+Access the admin panel at `/admin` to:
+- **Upload new documents** via drag & drop
+- **View all dataset files** with metadata
+- **Run ingestion processes** with one click
+- **Download or delete files** as needed
+- **Monitor ingestion status** in real-time
+
+### Command Line Tools
+
+#### Basic Ingestion
+```bash
+# Process all documents
+npm run ingest
+
+# Dry run (see what would be processed)
+npm run ingest:dry
+
+# Force reprocess all files
+npm run ingest:clear
+```
+
+#### Incremental Updates
+```bash
+# Only process changed/new files
+npm run ingest:incremental
+
+# Check dataset status
+npm run dataset:status
+```
+
+#### Process Specific Files
+```bash
+# Process only a specific file
+npm run ingest:file=document.pdf
+```
+
+### File Organization
+
+The system automatically categorizes documents based on filename patterns:
+
+- **CV/Resume**: `cv`, `resume`
+- **Portfolio**: `portfolio`
+- **Academic**: `transcript`, `literature`, `review`
+- **Project**: `readme`, `project`
+- **Notes**: `style`, `values`, `notes`
+
+## Workflow
+
+### Adding New Documents
+
+1. **Upload**: Use the web interface at `/admin` to upload new files
+2. **Process**: Click "Run Ingestion" to process new documents
+3. **Chat**: New knowledge is immediately available in your chat
+
+### Updating Existing Documents
+
+1. **Replace**: Upload a new version of the document
+2. **Re-ingest**: Run ingestion (automatically detects changes)
+3. **Verify**: Check that updates are reflected in chat responses
+
+### Best Practices
+
+- **File Naming**: Use descriptive names that indicate content type
+- **Regular Updates**: Run ingestion after adding new documents
+- **Backup**: Keep copies of important documents outside the system
+- **Metadata**: Use Markdown front-matter for custom categorization
+
+## Technical Details
+
+### Architecture
+
+- **Frontend**: Next.js 15 with React 19
+- **AI**: OpenAI GPT-4 for chat, text-embedding-3-small for embeddings
+- **Vector Database**: Pinecone for similarity search
+- **File Processing**: PDF.js for PDFs, unified for Markdown
+
+### File Processing
+
+- **Chunking**: Documents are split into 1200-character chunks with 200-character overlap
+- **Embeddings**: Each chunk is converted to a 1536-dimensional vector
+- **Metadata**: Preserves file source, title, and chunk information
+
+### Performance
+
+- **Batch Processing**: Processes embeddings in batches of 32
+- **Incremental Updates**: Only processes changed files by default
+- **Progress Tracking**: Real-time progress updates during ingestion
+
+## Troubleshooting
+
+### Common Issues
+
+**Ingestion Fails**
+- Check your `.env` file has correct API keys
+- Ensure Pinecone index exists and has correct dimensions (1536)
+- Verify documents are in supported formats
+
+**Files Not Appearing**
+- Check file permissions in `src/data/` directory
+- Ensure files have supported extensions (.pdf, .md, .txt)
+- Run `npm run ingest:clear` to force reprocessing
+
+**Chat Not Finding Information**
+- Verify ingestion completed successfully
+- Check Pinecone index has vectors
+- Try re-ingesting with `npm run ingest:clear`
+
+### Debug Mode
+
+Enable detailed logging by adding `--dry-run` to see what would be processed:
+
+```bash
+npm run ingest:dry
+```
+
+## Development
+
+### Project Structure
 
 ```
 src/
-├── app/
-│   ├── layout.tsx          # App shell with metadata
-│   ├── page.tsx            # Main chat page
-│   └── globals.css         # Tailwind + custom CSS
-├── components/
-│   ├── Header.tsx          # App header with title and avatar
-│   ├── ModeSwitcher.tsx    # Conversation mode selector
-│   ├── SampleQuestions.tsx # Sample question buttons
-│   ├── ChatWindow.tsx      # Chat transcript display
-│   ├── MessageBubble.tsx   # Individual message component
-│   ├── SourceChips.tsx     # Source badge display
-│   ├── Composer.tsx        # Message input component
-│   └── SidebarPanel.tsx    # Info and help section
-└── lib/
-    └── constants.ts        # Type definitions and empty data arrays
+├── app/                 # Next.js app router
+│   ├── admin/          # Admin panel pages
+│   ├── api/            # API endpoints
+│   └── ...
+├── components/         # React components
+│   ├── ui/            # UI components
+│   └── ...
+├── data/              # Document storage
+├── lib/               # Utility functions
+└── ...
+scripts/
+└── ingest.ts          # Document ingestion script
 ```
 
-## UI Components
+### Adding New Features
 
-- **Header**: Sticky header with app title and GitHub icon
-- **Mode Switcher**: Segmented control for conversation modes
-- **Chat Window**: Scrollable message area with empty state
-- **Message Bubbles**: Different styling for user vs assistant messages
-- **Source Chips**: Visual badges showing information sources
-- **Composer**: Message input form ready for backend integration
-- **Sidebar**: Sample questions and information panels
+1. **New File Types**: Extend `loadDocument()` in `scripts/ingest.ts`
+2. **UI Components**: Add to `src/components/` directory
+3. **API Endpoints**: Create in `src/app/api/` directory
+4. **Metadata**: Extend `DocumentMetadata` interface
 
-## Current Status
+### Testing
 
-The application is **ready for functionality implementation**:
-- ✅ Complete UI components and layout
-- ✅ Type definitions and interfaces
-- ✅ Props and event handlers prepared
-- ✅ No hardcoded demo data
-- 🔄 Backend integration needed
-- 🔄 API endpoints to be implemented
-- 🔄 Data persistence to be added
+```bash
+# Run linting
+npm run lint
 
-## Next Steps
+# Build for production
+npm run build
 
-To add functionality:
-1. ✅ **Backend API implemented** - Chat endpoint at `/api/chat` with RAG capabilities
-2. Implement message handling in the Composer component
-3. Add state management for chat messages
-4. Integrate with backend APIs for responses
-5. Add sample questions from backend
-6. Implement conversation mode logic
-7. Add data persistence and user sessions
-
-Perfect foundation for building a fully functional personal knowledge assistant.
-
-## RAG Implementation
-
-The Personal Codex Agent now includes a **Retrieval-Augmented Generation (RAG)** system that provides contextually accurate responses based on your personal documents.
-
-### How It Works
-
-1. **Question Embedding**: User questions are converted to vectors using OpenAI's `text-embedding-ada-002`
-2. **Semantic Search**: Pinecone finds the most relevant document chunks based on semantic similarity
-3. **Context Building**: Top 5 relevant chunks are assembled with metadata (title, source, file)
-4. **Prompt Engineering**: System combines your question with retrieved context and Matthew's voice/style
-5. **AI Generation**: GPT-4o-mini generates responses using only the provided context
-6. **Source Attribution**: Each response includes source citations for transparency
-
-### API Endpoint
-
-**POST** `/api/chat`
-```json
-{
-  "message": "What kind of engineer are you?",
-  "mode": "interview" // optional: "interview" | "story" | "tldr" | "humblebrag"
-}
+# Start production server
+npm start
 ```
 
-**Response**:
-```json
-{
-  "answer": "Based on my background...",
-  "sources": ["Matthew Schramm Resume.pdf", "project-readme.md"]
-}
-```
+## Contributing
 
-### Conversation Modes
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-- **Interview**: Concise, professional, evaluative responses
-- **Story**: Narrative, reflective, first-person when natural
-- **TL;DR**: Bullet points and summary format
-- **Humble Brag**: Confident but grounded in verifiable context
+## License
 
-### Security & Deployment
+This project is for personal use. Please respect the privacy and intellectual property of the documents you process.
 
-- **Server-only**: All API keys and secrets remain on the server
-- **Environment variables**: Uses `process.env` for configuration
-- **TypeScript**: Full type safety and IntelliSense support
-- **Error handling**: Proper HTTP status codes and error messages
-- **Production ready**: Works locally and after Vercel deployment
+## Support
 
-## Ingestion Pipeline
+For issues or questions:
+1. Check the troubleshooting section above
+2. Review the code comments for implementation details
+3. Open an issue with detailed error information
 
-The Personal Codex Agent includes a powerful document ingestion system that automatically processes your documents and makes them searchable through AI-powered semantic search.
-
-### Quick Start
-
-1. **Place your documents** in the `/src/data` directory:
-   - `.md` files with optional front-matter metadata
-   - `.txt` files (plain text)
-   - `.pdf` files (automatically parsed)
-
-2. **Set up environment variables** by copying `env.example` to `.env.local`:
-   ```bash
-   OPENAI_API_KEY=your_openai_api_key_here
-   PINECONE_API_KEY=your_pinecone_api_key_here
-   PINECONE_INDEX=personal-codex
-   PINECONE_ENV=us-east-1
-   ```
-
-3. **Run the ingestion script**:
-   ```bash
-   npm run ingest
-   ```
-
-### Document Format Support
-
-#### Markdown Files with Front-matter
-```yaml
 ---
-title: "Document Title"
-source: "CV" | "Project README" | "Work-Style Notes" | "Doc"
-tags: ["tag1", "tag2", "tag3"]
----
-# Your content here
-```
 
-#### Automatic Metadata Inference
-If no front-matter is provided, the system automatically infers:
-- **Source**: Based on filename patterns (cv/resume → "CV", readme/project → "Project README", etc.)
-- **Title**: Filename without extension
-- **Tags**: Empty array (can be added manually later)
-
-### Pinecone Index Requirements
-
-Create a Pinecone index with these settings:
-- **Dimension**: 1536 (required for OpenAI text-embedding-ada-002)
-- **Metric**: Cosine similarity
-- **Environment**: Your preferred Pinecone environment
-
-### Ingestion Features
-
-- **Smart Chunking**: 1200 character chunks with 200 character overlap
-- **Batch Processing**: 32 documents per embedding batch for efficiency
-- **Idempotent**: Re-running overwrites existing vectors with same IDs
-- **Progress Tracking**: Real-time updates on processing status
-- **Error Handling**: Graceful fallbacks for malformed documents
-
-### CLI Options
-
-- **Dry Run**: `npm run ingest -- --dry-run` (processes documents without upserting)
-- **Clear Existing**: `npm run ingest -- --clear` (removes existing vectors before ingestion)
-
-### Metadata for UI Citations
-
-Each document chunk includes rich metadata:
-- `text`: The actual chunk content
-- `title`: Human-readable document title
-- `source`: Document category (CV, Project README, etc.)
-- `tags`: Array of relevant tags
-- `file`: Original filename for tracking
-
-This metadata powers the citation system in the chat interface, providing users with source attribution for all AI responses.
+**Happy knowledge building! 🚀**

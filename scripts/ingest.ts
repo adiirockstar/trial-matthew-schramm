@@ -45,7 +45,9 @@ console.log(`🔍 Debug: process.argv = [${process.argv.join(', ')}]`);
 console.log(`🔍 Debug: args = [${args.join(', ')}]`);
 const isDryRun = args.includes('--dry-run');
 const shouldClear = args.includes('--clear');
-console.log(`🔍 Debug: isDryRun = ${isDryRun}, shouldClear = ${shouldClear}`);
+const incremental = args.includes('--incremental');
+const specificFile = args.find(arg => arg.startsWith('--file='))?.split('=')[1];
+console.log(`🔍 Debug: isDryRun = ${isDryRun}, shouldClear = ${shouldClear}, incremental = ${incremental}, specificFile = ${specificFile}`);
 
 interface DocumentMetadata {
   title: string;
@@ -62,7 +64,50 @@ interface Chunk {
     source: string;
     tags: string[];
     file: string;
+    chunkIndex: number;
+    totalChunks: number;
   };
+}
+
+interface FileInfo {
+  path: string;
+  name: string;
+  size: number;
+  lastModified: Date;
+  hash: string;
+}
+
+// Helper function to generate file hash
+async function generateFileHash(filePath: string): Promise<string> {
+  const content = fs.readFileSync(filePath);
+  const crypto = await import('crypto');
+  return crypto.default.createHash('md5').update(content).digest('hex');
+}
+
+// Helper function to get file information
+async function getFileInfo(filePath: string): Promise<FileInfo> {
+  const stats = fs.statSync(filePath);
+  return {
+    path: filePath,
+    name: path.basename(filePath),
+    size: stats.size,
+    lastModified: stats.mtime,
+    hash: await generateFileHash(filePath)
+  };
+}
+
+// Helper function to check if file needs processing
+function needsProcessing(fileInfo: FileInfo, processedFiles: Map<string, string>): boolean {
+  if (specificFile && fileInfo.name !== specificFile) {
+    return false;
+  }
+  
+  if (incremental) {
+    const lastHash = processedFiles.get(fileInfo.name);
+    return lastHash !== fileInfo.hash;
+  }
+  
+  return true;
 }
 
 // Helper function to infer metadata from filename
@@ -76,6 +121,12 @@ function inferMetadata(filename: string): DocumentMetadata {
     source = 'Project README';
   } else if (lowerFilename.includes('style') || lowerFilename.includes('values') || lowerFilename.includes('notes')) {
     source = 'Work-Style Notes';
+  } else if (lowerFilename.includes('transcript')) {
+    source = 'Academic Transcript';
+  } else if (lowerFilename.includes('portfolio')) {
+    source = 'Portfolio';
+  } else if (lowerFilename.includes('literature') || lowerFilename.includes('review')) {
+    source = 'Literature Review';
   }
   
   return {
@@ -119,48 +170,48 @@ async function loadDocument(filePath: string): Promise<{ content: string; metada
       
       return { content, metadata };
       
-         } else if (ext === '.pdf') {
-       try {
-         // Read PDF file as buffer and convert to Uint8Array
-         const dataBuffer = fs.readFileSync(filePath);
-         const uint8Array = new Uint8Array(dataBuffer);
-         
-         // Use pdfjs-dist legacy build for Node.js compatibility
-         const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-         
-         // Load the PDF document
-         const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
-         const pdfDocument = await loadingTask.promise;
-         
-         // Extract text from all pages
-         let fullText = '';
-         for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
-           const page = await pdfDocument.getPage(pageNum);
-           const textContent = await page.getTextContent();
-                     const pageText = textContent.items
+    } else if (ext === '.pdf') {
+      try {
+        // Read PDF file as buffer and convert to Uint8Array
+        const dataBuffer = fs.readFileSync(filePath);
+        const uint8Array = new Uint8Array(dataBuffer);
+        
+        // Use pdfjs-dist legacy build for Node.js compatibility
+        const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+        
+        // Load the PDF document
+        const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
+        const pdfDocument = await loadingTask.promise;
+        
+        // Extract text from all pages
+        let fullText = '';
+        for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
+          const page = await pdfDocument.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items
             .map((item) => 'str' in item ? item.str : '')
             .join(' ');
-           fullText += pageText + '\n';
-         }
-         
-         content = fullText;
-         
-         // For PDFs, we can only infer metadata from filename
-         const inferred = inferMetadata(filename);
-         const metadata: DocumentMetadata = {
-           title: inferred.title,
-           source: inferred.source,
-           tags: inferred.tags
-         };
-         
-         console.log(`  📄 PDF parsed successfully: ${pdfDocument.numPages} pages, ${content.length} characters`);
-         return { content, metadata };
-         
-               } catch (pdfError) {
-          console.warn(`  ⚠️  Could not parse PDF ${filename}: ${getErrorMessage(pdfError)}`);
-          return null;
+          fullText += pageText + '\n';
         }
-     }
+        
+        content = fullText;
+        
+        // For PDFs, we can only infer metadata from filename
+        const inferred = inferMetadata(filename);
+        const metadata: DocumentMetadata = {
+          title: inferred.title,
+          source: inferred.source,
+          tags: inferred.tags
+        };
+        
+        console.log(`  📄 PDF parsed successfully: ${pdfDocument.numPages} pages, ${content.length} characters`);
+        return { content, metadata };
+        
+      } catch (pdfError) {
+        console.warn(`  ⚠️  Could not parse PDF ${filename}: ${getErrorMessage(pdfError)}`);
+        return null;
+      }
+    }
     
     return null;
   } catch (error) {
@@ -194,7 +245,9 @@ async function chunkText(text: string, filename: string): Promise<Chunk[]> {
       title: '', // Will be set by caller
       source: '', // Will be set by caller
       tags: [], // Will be set by caller
-      file: filename
+      file: filename,
+      chunkIndex: index,
+      totalChunks: chunks.length
     }
   }));
 }
@@ -238,6 +291,27 @@ async function clearExistingVectors(index: ReturnType<typeof initializePinecone>
   }
 }
 
+// Load processed files tracking
+function loadProcessedFiles(): Map<string, string> {
+  const trackingFile = path.join(process.cwd(), '.ingest-tracking.json');
+  if (fs.existsSync(trackingFile)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(trackingFile, 'utf-8'));
+      return new Map(Object.entries(data));
+    } catch (error) {
+      console.warn('⚠️  Could not load tracking file, starting fresh');
+    }
+  }
+  return new Map();
+}
+
+// Save processed files tracking
+function saveProcessedFiles(processedFiles: Map<string, string>) {
+  const trackingFile = path.join(process.cwd(), '.ingest-tracking.json');
+  const data = Object.fromEntries(processedFiles);
+  fs.writeFileSync(trackingFile, JSON.stringify(data, null, 2));
+}
+
 // Main ingestion function
 async function ingestDocuments() {
   console.log('🚀 Starting document ingestion...\n');
@@ -248,32 +322,52 @@ async function ingestDocuments() {
     console.log('Please create the data directory and add your documents.');
     process.exit(0);
   }
+
+  // Load tracking for incremental updates
+  const processedFiles = loadProcessedFiles();
   
   // Get all document files
-  const files = fs.readdirSync(DATA_DIR)
+  const allFilesPromises = fs.readdirSync(DATA_DIR)
     .filter(file => /\.(md|txt|pdf)$/i.test(file))
-    .map(file => path.join(DATA_DIR, file));
+    .map(file => path.join(DATA_DIR, file))
+    .map(file => getFileInfo(file));
+
+  const allFiles = await Promise.all(allFilesPromises);
+
+  // Filter files that need processing
+  const filesToProcess = allFiles.filter(file => needsProcessing(file, processedFiles));
   
-  if (files.length === 0) {
-    console.log('❌ No document files found in data directory.');
-    console.log('Supported formats: .md, .txt, .pdf');
+  if (filesToProcess.length === 0) {
+    console.log('✅ All files are up to date. No processing needed.');
+    if (incremental) {
+      console.log('Use --clear to force reprocessing of all files.');
+    }
     process.exit(0);
   }
-  
-  console.log(`📁 Found ${files.length} document(s):`);
-  files.forEach(file => console.log(`  • ${path.basename(file)}`));
+
+  console.log(`📁 Found ${allFiles.length} total files, ${filesToProcess.length} need processing:`);
+  filesToProcess.forEach(file => {
+    const status = processedFiles.has(file.name) ? '🔄 Updated' : '🆕 New';
+    console.log(`  ${status} • ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
+  });
   console.log();
-  
+
   // Load and parse documents
   const documents: Array<{ content: string; metadata: DocumentMetadata; filename: string }> = [];
   
-  for (const filePath of files) {
-    const filename = path.basename(filePath);
+  for (const fileInfo of filesToProcess) {
+    const filename = fileInfo.name;
     console.log(`📖 Processing ${filename}...`);
     
-    const doc = await loadDocument(filePath);
+    const doc = await loadDocument(fileInfo.path);
     if (doc) {
+      console.log(`  🔍 Raw content length: ${doc.content.length} characters`);
+      console.log(`  🔍 Raw content preview: "${doc.content.substring(0, 200)}..."`);
+      
       const normalizedContent = normalizeText(doc.content);
+      console.log(`  🔍 Normalized content length: ${normalizedContent.length} characters`);
+      console.log(`  🔍 Normalized content preview: "${normalizedContent.substring(0, 200)}..."`);
+      
       if (normalizedContent.length > 0) {
         documents.push({
           content: normalizedContent,
@@ -283,6 +377,7 @@ async function ingestDocuments() {
         console.log(`  ✅ Loaded ${normalizedContent.length} characters`);
       } else {
         console.log(`  ⚠️  Skipped (empty after normalization)`);
+        console.log(`  🔍 Debug: Raw content was "${doc.content}"`);
       }
     }
   }
@@ -373,7 +468,8 @@ async function ingestDocuments() {
       await index.upsert(upsertData);
       
       processedChunks += batch.length;
-      console.log(`  ✅ Processed ${processedChunks}/${allChunks.length} chunks`);
+      const progress = ((processedChunks / allChunks.length) * 100).toFixed(1);
+      console.log(`  ✅ Processed ${processedChunks}/${allChunks.length} chunks (${progress}%)`);
       
     } catch (error) {
       console.error(`❌ Error processing batch ${i / BATCH_SIZE + 1}: ${getErrorMessage(error)}`);
@@ -381,10 +477,21 @@ async function ingestDocuments() {
     }
   }
   
+  // Update tracking for successfully processed files
+  for (const fileInfo of filesToProcess) {
+    processedFiles.set(fileInfo.name, fileInfo.hash);
+  }
+  saveProcessedFiles(processedFiles);
+  
   console.log(`\n🎉 Ingestion complete!`);
   console.log(`📊 Total vectors created: ${processedChunks}`);
   console.log(`📁 Files processed: ${documents.length}`);
   console.log(`🔢 Total chunks: ${allChunks.length}`);
+  
+  if (incremental) {
+    console.log(`\n📝 Tracking file updated. Future runs will only process changed files.`);
+    console.log(`Use --clear to force reprocessing of all files.`);
+  }
 }
 
 // Main execution

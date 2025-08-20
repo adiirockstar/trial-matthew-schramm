@@ -1,5 +1,6 @@
-import { Github } from "lucide-react";
+import { Github, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function Header() {
   return (
@@ -15,10 +16,18 @@ export function Header() {
           </div>
         </div>
         
-        <Button variant="ghost" size="icon" className="h-9 w-9">
-          <Github className="h-4 w-4" />
-          <span className="sr-only">GitHub</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link href="/admin">
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Settings className="h-4 w-4" />
+              <span className="sr-only">Admin</span>
+            </Button>
+          </Link>
+          <Button variant="ghost" size="icon" className="h-9 w-9">
+            <Github className="h-4 w-4" />
+            <span className="sr-only">GitHub</span>
+          </Button>
+        </div>
       </div>
     </header>
   );

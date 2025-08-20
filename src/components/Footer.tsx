@@ -34,7 +34,7 @@ export function Footer() {
               </Button>
             </div>
             <div className="text-sm text-muted-foreground">
-              <p>Built with Next.js & AI</p>
+              <p>Built with Next.js, OpenAI, and Pinecone</p>
             </div>
           </div>
         </div>
@@ -42,11 +42,11 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-4 pt-4 border-t">
           <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground md:flex-row">
-            <p>&copy; 2024 Matthew Schramm. All rights reserved.</p>
+            <p>&copy; 2025 Matthew Schramm. All rights reserved.</p>
             <p className="flex items-center gap-1">
               <span>Powered by</span>
               <Button variant="link" size="sm" className="h-auto p-0 text-primary hover:text-primary/80">
-                <span>Claude Sonnet 4</span>
+                <span>OpenAI GPT-4o-mini</span>
                 <ExternalLink className="h-3 w-3 ml-1" />
               </Button>
             </p>

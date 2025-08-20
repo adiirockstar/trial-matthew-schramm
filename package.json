@@ -7,7 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ingest": "tsx scripts/ingest.ts"
+    "ingest": "tsx scripts/ingest.ts",
+    "ingest:dry": "tsx scripts/ingest.ts --dry-run",
+    "ingest:clear": "tsx scripts/ingest.ts --clear",
+    "ingest:incremental": "tsx scripts/ingest.ts --incremental",
+    "ingest:file": "tsx scripts/ingest.ts --file=",
+    "dataset:status": "tsx scripts/ingest.ts --dry-run --incremental",
+    "setup": "bash scripts/setup.sh",
+    "setup:win": "scripts\\setup.bat"
   },
   "dependencies": {
     "@langchain/openai": "^0.6.9",
@@ -15,6 +22,7 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
