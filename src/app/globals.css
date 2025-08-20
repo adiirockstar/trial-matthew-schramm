@@ -238,6 +238,198 @@
   box-shadow: 0 0 0 2px hsl(var(--ring));
 }
 
+/* Header-specific mobile optimizations */
+@media (max-width: 640px) {
+  /* Ensure header fits properly on small mobile screens */
+  header {
+    min-height: 48px; /* 3rem - matches h-12 */
+  }
+  
+  /* Better mobile header spacing */
+  header .container {
+    padding-left: 0.5rem; /* 8px */
+    padding-right: 0.5rem; /* 8px */
+  }
+  
+  /* Mobile header button sizing */
+  header button {
+    min-height: 28px; /* 7 * 4px = 28px */
+    min-width: 28px;
+  }
+  
+  /* Mobile header text sizing */
+  header h1 {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem; /* 20px */
+  }
+  
+  header p {
+    font-size: 0.75rem; /* 12px */
+    line-height: 1rem; /* 16px */
+  }
+  
+  /* Mobile header icon sizing */
+  header svg {
+    width: 14px; /* 3.5 * 4px = 14px */
+    height: 14px;
+  }
+  
+  /* Mobile header gaps */
+  header .flex > div:first-child {
+    gap: 0.375rem; /* 6px */
+  }
+  
+  header .flex > div:last-child {
+    gap: 0.125rem; /* 2px */
+  }
+  
+  /* Ensure text doesn't overflow on small screens */
+  header .min-w-0 {
+    overflow: hidden;
+  }
+  
+  header .truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Better mobile touch targets */
+  header button,
+  header a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Mobile header container improvements */
+  header .container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Small mobile screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  header .container {
+    padding-left: 0.375rem; /* 6px */
+    padding-right: 0.375rem; /* 6px */
+  }
+  
+  header h1 {
+    font-size: 0.8125rem; /* 13px */
+  }
+  
+  header p {
+    font-size: 0.6875rem; /* 11px */
+  }
+  
+  /* Reduce gaps further for very small screens */
+  header .flex > div:first-child {
+    gap: 0.25rem; /* 4px */
+  }
+  
+  header .flex > div:last-child {
+    gap: 0.125rem; /* 2px */
+  }
+  
+  /* Ensure proper text sizing on very small screens */
+  header .min-w-0 {
+    max-width: 120px; /* Limit width to prevent overflow */
+  }
+}
+
+/* Extra small mobile screens */
+@media (max-width: 320px) {
+  header .container {
+    padding-left: 0.25rem; /* 4px */
+    padding-right: 0.25rem; /* 4px */
+  }
+  
+  header h1 {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  header p {
+    font-size: 0.625rem; /* 10px */
+  }
+  
+  /* Minimal gaps for very small screens */
+  header .flex > div:first-child {
+    gap: 0.125rem; /* 2px */
+  }
+  
+  header .flex > div:last-child {
+    gap: 0.0625rem; /* 1px */
+  }
+  
+  /* Ensure text fits on very small screens */
+  header .min-w-0 {
+    max-width: 100px;
+  }
+  
+  /* Reduce button sizes for very small screens */
+  header button {
+    min-height: 24px;
+    min-width: 24px;
+  }
+  
+  header svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* iPhone 12 specific optimizations (390px width) */
+@media (min-width: 375px) and (max-width: 390px) {
+  header .container {
+    padding-left: 0.5rem; /* 8px */
+    padding-right: 0.5rem; /* 8px */
+  }
+  
+  header h1 {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  header p {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  /* iPhone 12 specific spacing */
+  header .flex > div:first-child {
+    gap: 0.375rem; /* 6px */
+  }
+  
+  header .flex > div:last-child {
+    gap: 0.125rem; /* 2px */
+  }
+  
+  /* Ensure proper text sizing for iPhone 12 */
+  header .min-w-0 {
+    max-width: 140px; /* Slightly more space on iPhone 12 */
+  }
+}
+
+/* Ensure header works well on all mobile orientations */
+@media (max-width: 640px) and (orientation: landscape) {
+  header {
+    min-height: 44px; /* Slightly smaller for landscape */
+  }
+  
+  header .container {
+    padding-left: 0.375rem; /* 6px */
+    padding-right: 0.375rem; /* 6px */
+  }
+  
+  /* Reduce text size in landscape */
+  header h1 {
+    font-size: 0.8125rem; /* 13px */
+  }
+  
+  header p {
+    font-size: 0.6875rem; /* 11px */
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .message-bubble {
