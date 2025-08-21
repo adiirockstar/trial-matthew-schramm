@@ -172,27 +172,80 @@ The system automatically categorizes documents based on filename patterns:
 ## ❓ Sample Questions & Expected Answers
 
 **Q1. What kind of engineer are you?**
-Expected answer (grounded in my CV + project README):
-TODO: "I'm a full-stack/software engineer who focuses on clean architectures, pragmatic shipping, and data-informed iteration. Recent work: Vue + Spring Boot affiliate system; Next.js RAG prototype."
-Sources: CV, Project README
+Expected answer: I am a full-stack developer with a focus on creating scalable business solutions. My expertise spans modern web technologies, including React, Vue.js, Node.js, and Spring Boot. I approach projects with a business-first mindset, aiming to transform complex challenges into elegant digital solutions. My experience includes building responsive applications, optimizing workflows, and mentoring others in the field.
+
+Sources: [Portfolio], [CV]
 
 **Q2. What are your strongest technical skills?**
-TODO: Bullets with sources (CV/README/code snippet)
+Expected answer: 
+Your strongest technical skills include:
+
+1. **Frontend Development**: 
+   - HTML5 (Expert, 90%)
+   - CSS3 (Expert, 85%)
+   - JavaScript (Expert, 88%)
+   - React (Expert, 90%)
+   - Vue.js (Advanced, 80%)
+
+2. **Backend Development**: 
+   - Python (Expert, 92%)
+   - Java (Expert, 85%)
+   - Node.js (Expert, 88%)
+   - Firebase (Expert, 95%)
+   - SQL (Advanced, 88%)
+
+3. **Tools & Management**: 
+   - Git (Expert, 94%)
+   - Project Management (Expert, 90%)
+   - Scrum & Jira (Advanced, 75%)
+   - Process Redesign (Expert, 88%)
+
+Your experience spans over three years, focusing on full-stack development and business solutions, with a strong emphasis on creating engaging user experiences and robust server-side solutions.
+
+Sources: [Portfolio], [CV]
 
 **Q3. What projects or experiences are you most proud of?**
-TODO: One short paragraph + sources
+Expected Answer: The project I am most proud of is the Amplify platform, a location-based social marketing tool developed in collaboration with Impact.com. This project stands out for its innovative approach to gamifying influencer marketing, integrating six APIs for real-time geolocation validation and automated campaign tracking. I take pride in the responsive dashboards and role-based access control features, which enhance user experience and operational efficiency. The project embodies my commitment to creating scalable, user-focused digital solutions that address real-world challenges.
+
+Sources: Matthew Schramm - Computer Science & IT Student Portfolio, Matthew Schramm Resume.
 
 **Q4. What do you value in a team or company culture?**
-TODO: One short paragraph + sources
+Expected Answer:
+In a team or company culture, I value:
+
+1. **Clear Communication**: Direct and straightforward interactions without jargon.
+2. **Collaboration**: A strong emphasis on teamwork and knowledge sharing across disciplines.
+3. **Continuous Learning**: Opportunities for personal and professional development, including peer learning.
+4. **User-Centric Approach**: Solutions that prioritize the end-user experience and inclusivity.
+5. **Empowerment**: A culture that supports autonomy while providing necessary guidance.
+6. **Constructive Feedback**: Honest, actionable feedback that fosters improvement and growth.
+7. **Flexibility**: An environment that accommodates different working styles and schedules.
+8. **Innovation and Process Optimization**: A focus on simplifying complexity and enhancing system effectiveness.
+
+These values reflect my belief in creating impactful, scalable solutions while fostering a supportive and dynamic work environment.
+
+Sources: [Work-Style Notes], [Academic Transcript]
 
 **Q5. What's your approach to learning or debugging something new?**
-TODO: One short paragraph + sources
+Expected answer:
+To approach learning or debugging something new, I follow a structured methodology that emphasizes understanding the problem thoroughly before diving into solutions. Here’s a concise breakdown of my approach:
 
-*Note: The live app surfaces source chips under answers.*
+1. **Understand the Problem**: I gather all relevant requirements and context to ensure clarity.
+2. **Research Solutions**: I investigate existing patterns and best practices to inform my approach.
+3. **Design & Prototype**: I create a plan and build a proof of concept to visualize the solution.
+4. **Iterate & Refine**: Based on feedback and testing, I improve the solution iteratively.
+5. **Document & Share**: I record my learnings for future reference, ensuring that knowledge is accessible.
+
+I also prefer hands-on practice, as it allows me to learn effectively by doing. Comprehensive documentation is my go-to resource over video tutorials, and I value community learning through discussions with peers.
+
+This method not only aids in effective learning but also aligns with my values of user-centric design, maintainability, and continuous improvement.
+
+Sources: Work Style & Values Notes, Matthew Schramm - Computer Science & IT Student Portfolio.
+
 
 ## 📚 Dataset Explanation (Why These Docs?)
 
-The dataset includes 3-4 representative documents: CV/resume, project README, work-style/values notes, and small code snippets with comments. These documents were chosen because they comprehensively represent my technical skills, project experience, professional voice, and core values. The selection is intentionally concise to maximize signal for retrieval while covering the key dimensions that define my professional identity.
+The dataset includes 3-4 representative documents: CV/resume, project README, work-style/values notes, and a literature review I wrote. These documents were chosen because they comprehensively represent my technical skills, project experience, professional voice, and core values. The selection is intentionally concise to maximize signal for retrieval while covering the key dimensions that define my professional identity.
 
 ## 🏗️ Technical Architecture
 
@@ -230,41 +283,163 @@ The dataset includes 3-4 representative documents: CV/resume, project README, wo
 - **Streaming with inline citation markers** and hover-to-expand snippets
 - **Retrieval filters by tags/mode** + re-ranker for better context selection
 - **Better PDF cleanup**; semantic sectioning for CV/long documents
+- **Better PDF Reading**; some pdf files are not processed if containing certain characters etc.
 - **Evaluation harness** (answer faithfulness & coverage metrics)
-- **User-upload re-ingest endpoint** with queue & progress tracking
 - **Access control + private deployments** for sensitive documents
 - **Observability** (traces, token usage, latency monitoring)
 - **Unit tests** for ingestion and prompt templates
+- **Redo the UI to represent a full functional codex agent anyone can use**
 
 ## 🧠 Show Your Thinking (AI-Native Build Artifacts)
 
-The `/artifacts/` folder contains:
+**Prompt Histories & Building Blocks**
 
-- **Prompt histories** from AI tools (selected excerpts)
-- **Sub-agent / mode instructions** (e.g., Interview, Story, TL;DR, Humble-Brag, Self-Reflection)
-- **Prompt → AI response → final code snippet** chains
-- **AI-generated vs manual breakdown** (per commit or per file)
+Here are concrete examples of how I collaborated with AI coding agents to build this project:
 
-**Mini index structure:**
-```
-/artifacts/
-  prompts/
-    chat_system_prompt.md
-    mode_preambles.md
-  sessions/
-    01_ingestion_prompt_to_code.md
-    02_chat_route_prompt_to_code.md
-  commits/
-    ai_vs_manual_breakdown.md
-```
+Ingestion Pipeline (scripts/ingest.ts)
 
-These artifacts demonstrate my AI-native workflow and problem-solving process.
+Prompt: "Create a standalone ingestion script in TypeScript that reads Markdown, PDF, and text files from /data, chunks them into ~1200 characters with 200 overlap, generates embeddings with OpenAI, and upserts into Pinecone with metadata."
+AI Response: Produced a TypeScript script using RecursiveCharacterTextSplitter, OpenAIEmbeddings, and Pinecone client with upsert logic.
+Final Code: I adopted the AI’s structure but manually added logging, environment variable handling, and a dry-run mode.
+
+
+Chat API Route (app/api/chat/route.ts)
+
+Prompt: "Implement a Next.js API route /api/chat that takes a user message, embeds it, queries Pinecone for top-K results, builds a prompt in my voice, and calls gpt-4o-mini. Return both the answer and the source titles."
+AI Response: Generated a working route with Pinecone query and OpenAI chat call.
+Final Code: I integrated mode preambles, improved error handling, and added UI-friendly source chip formatting.
+
+
+Conversation Modes (lib/prompt.ts)
+
+Prompt: "Define different conversation modes for my chatbot: Interview, Story, TL;DR, Humble Brag, and Self-Reflection. Each should have a short system prompt string."
+AI Response: Suggested style definitions for each mode.
+Final Code: I refined the tone descriptions and ensured consistency with my personal voice.
+
+**Instructions, Rules, and Guidance to AI Agents**
+
+I provided my AI agents with clear instructions to ensure responses are consistent, grounded, and aligned with my personal style:
+
+Core System Instructions:
+
+Use only the provided context (no fabrications).
+
+Speak in my voice — concise, friendly, technically precise, reflective.
+
+Always cite sources and acknowledge when info is missing.
+
+Conversation Modes:
+Five pre-defined modes (Interview, Story, TL;DR, Humble Brag, Self-Reflection) alter tone while using the same knowledge base.
+
+Retrieval & Prompt Rules:
+
+Use top-5 most relevant chunks, minimum relevance threshold = 0.2.
+
+Structured prompts separate system rules, user question, and retrieved context.
+
+Explicit instruction: “End reply with Sources: <titles>”.
+
+Error Handling & Edge Cases:
+
+Detect greetings and switch to a warmer, conversational system prompt.
+
+Different temperature settings (0.7 for greetings, 0.3 for retrieval) balance creativity and accuracy.
+
+Quality Assurance:
+
+Every response must include source attribution.
+
+Context-aware fallbacks if no relevant docs are found.
+
+These rules reflect my AI-native thinking process: constraint-first design, mode-based specialization, graceful degradation, and transparency by default.
+
+**Conversation Snippets, Commit Messages, and Logs (Prompt → AI Response → Final Code)**
+
+To demonstrate my AI-native workflow, here are concrete examples of how prompts evolved into final production code:
+
+1. Ingestion Pipeline (scripts/ingest.ts)
+
+Prompt: “Create a TypeScript ingestion script that reads Markdown/PDF/TXT files from /data, chunks them (~1200 chars, 200 overlap), generates OpenAI embeddings, and upserts into Pinecone with metadata.”
+
+AI Response: Produced a working script using RecursiveCharacterTextSplitter, OpenAIEmbeddings, and Pinecone upserts.
+
+Final Code: I added env var handling, logging, dry-run mode, and error recovery.
+
+2. Chat API Route (app/api/chat/route.ts)
+
+Prompt: “Implement a Next.js API route /api/chat that embeds user input, queries Pinecone, builds a system prompt in my voice, and calls gpt-4o-mini. Return answer + sources.”
+
+AI Response: Generated a route with Pinecone query + OpenAI chat call.
+
+Final Code: I added mode preambles, greeting detection, relevance thresholding, and UI-friendly tweaks.
+
+3. Conversation Modes (lib/prompt.ts)
+
+Prompt: “Define Interview, Story, TL;DR, Humble Brag, and Self-Reflection modes as system prompts.”
+
+AI Response: Suggested short style definitions.
+
+Final Code: I refined tone, especially Self-Reflection mode, to ensure responses felt personal and growth-oriented.
+
+4. Example Conversation Snippet
+
+User: "What kind of engineer are you?"
+Context Retrieved: CV.md + project-readme.md
+System Prompt: "You are Matthew’s Personal Codex. Speak in his voice. Cite sources."
+AI Response: "I'm a full-stack engineer focused on clean architecture and pragmatic shipping. For example, I built a location-based affiliate system with Vue + Spring Boot. Sources: CV, Project README."
+
+
+Commit Workflow Pattern
+
+AI scaffold → Manual refinement → Production polish.
+
+Examples: added robust logging to ingestion, tuned temperature in chat, improved tone consistency in prompts.
+
+**Breakdown: AI-Generated vs. Manually Edited Implementation**
+
+My development process followed a clear AI scaffold → Manual refinement → Production polish pattern.
+
+AI Contributions
+
+Generated scaffolding for the ingestion pipeline (scripts/ingest.ts) with chunking, embeddings, and Pinecone upserts.
+
+Produced the initial Chat API route (app/api/chat/route.ts) with query + LLM call.
+
+Suggested mode definitions for conversation styles in lib/prompt.ts.
+
+Basic TypeScript/Next.js patterns, imports, and loops.
+
+*Manual Contributions* 
+
+Added sophisticated error handling, logging, and CLI flags (e.g., --dry-run, incremental re-ingest).
+
+Designed intelligent file categorization and metadata inference.
+
+Implemented greeting detection, relevance thresholds, and graceful fallbacks in the chat API.
+
+Refined conversation modes to reflect my personal tone, especially the Self-Reflection mode.
+
+Built UI components (ChatWindow.tsx, ModeSwitcher.tsx, AdminPanel.tsx) and UX features like streaming indicators, clickable source chips, and retry mechanisms.
+
+Performance optimizations: batch processing, incremental updates, hash-based change detection.
+
+Commit Pattern Analysis
+
+AI generated basic scaffolding.
+
+I added domain expertise (error handling, metadata, UX rules).
+
+Iterated for polish (streaming, user-friendly UI, logging).
+
+Delivered a production-ready system.
+
+**These artifacts demonstrate my AI-native workflow and problem-solving process.**
 
 ## 📤 Submission
 
 **Checklist:**
 - ✅ **GitHub Repo**: [this repository](https://github.com/yourusername/matthew-schramm-personal-codex-agent)
-- ✅ **Deployed App**: https://YOUR-VERCEL-URL
+- ✅ **Deployed App**: https://matthew-schramm-codex-agent.vercel.app
 - ✅ **Video Walkthrough (≤5 min)**: https://YOUR-VIDEO-LINK
 
 *The app is public for evaluation; secrets are server-side in API routes.*
