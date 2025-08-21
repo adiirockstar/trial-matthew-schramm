@@ -14,7 +14,7 @@ interface DocumentMetadata {
 const CHAT_MODEL = "gpt-4o-mini";
 const EMB_MODEL = "text-embedding-3-small"; // Changed to match ingest script
 const TOP_K = 5;
-const RELEVANCE_THRESHOLD = 0.3; // Lowered from 0.7 to be more permissive
+const RELEVANCE_THRESHOLD = 0.2; // Lowered from 0.7 to be more permissive
 
 export async function POST(req: NextRequest) {
   try {

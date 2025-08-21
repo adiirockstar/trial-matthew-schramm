@@ -32,6 +32,24 @@ export function SelfReflectionQuestions({
       category: "Growth Areas",
       question: "Where do I need to grow?",
       description: "Identify areas for development and improvement"
+    },
+    {
+      icon: <Brain className="h-4 w-4" />,
+      category: "Personal Insights",
+      question: "What does my work history reveal about my values?",
+      description: "Discover what truly matters to you through your choices"
+    },
+    {
+      icon: <Users className="h-4 w-4" />,
+      category: "Communication Style",
+      question: "How do I present myself in different contexts?",
+      description: "Analyze your adaptability and communication patterns"
+    },
+    {
+      icon: <TrendingUp className="h-4 w-4" />,
+      category: "Technical Identity",
+      question: "What kind of engineer am I becoming?",
+      description: "Reflect on your technical evolution and aspirations"
     }
   ];
 
